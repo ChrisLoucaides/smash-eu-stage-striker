@@ -1,18 +1,24 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import StageGrid from './components/StageGrid.vue'
+import SetupModal from './components/SetupModal.vue'
 import { useGameStore } from './stores/gameStore'
 
 const gameStore = useGameStore()
+const showSetupModal = ref(false)
 
-// For testing purposes, let's set up a basic match
-const setupTestMatch = () => {
-  gameStore.setupMatch({
-    player1Name: 'Player 1',
-    player2Name: 'Player 2',
-    matchFormat: 'BO3',
-    firstBan: 0,
-    gentlemansAgreement: false,
-  })
+// Show setup modal when in setup phase
+const openSetupModal = () => {
+  showSetupModal.value = true
+}
+
+const closeSetupModal = () => {
+  showSetupModal.value = false
+}
+
+// Reset to setup phase
+const resetToSetup = () => {
+  gameStore.resetToSetup()
 }
 </script>
 
@@ -26,9 +32,9 @@ const setupTestMatch = () => {
     <main class="app-main">
       <div v-if="gameStore.currentPhase === 'setup'" class="setup-section">
         <h2>Match Setup</h2>
-        <p>Click the button below to start a test match and see the stage grid in action.</p>
-        <button @click="setupTestMatch" class="setup-button">
-          Start Test Match
+        <p>Configure your match settings to get started with stage banning.</p>
+        <button @click="openSetupModal" class="setup-button">
+          Configure Match
         </button>
       </div>
       
@@ -51,12 +57,18 @@ const setupTestMatch = () => {
         <StageGrid />
         
         <div class="game-controls">
-          <button @click="gameStore.resetToSetup" class="reset-button">
+          <button @click="resetToSetup" class="reset-button">
             Back to Setup
           </button>
         </div>
       </div>
     </main>
+    
+    <!-- Setup Modal -->
+    <SetupModal 
+      :is-open="showSetupModal" 
+      @close="closeSetupModal" 
+    />
   </div>
 </template>
 
