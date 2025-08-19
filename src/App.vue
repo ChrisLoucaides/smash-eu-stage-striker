@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import StageGrid from './components/StageGrid.vue'
 import SetupModal from './components/SetupModal.vue'
+import ScoreBoard from './components/ScoreBoard.vue'
 import { useGameStore } from './stores/gameStore'
 
 const gameStore = useGameStore()
@@ -39,20 +40,7 @@ const resetToSetup = () => {
       </div>
       
       <div v-else class="game-section">
-        <div class="game-info">
-          <h3>Game {{ gameStore.currentGame }}</h3>
-          <div class="player-info">
-            <div class="player">
-              <span class="player-name player-1">{{ gameStore.players[0].name }}</span>
-              <span class="player-score">{{ gameStore.players[0].score }}</span>
-            </div>
-            <div class="vs">vs</div>
-            <div class="player">
-              <span class="player-name player-2">{{ gameStore.players[1].name }}</span>
-              <span class="player-score">{{ gameStore.players[1].score }}</span>
-            </div>
-          </div>
-        </div>
+        <ScoreBoard />
         
         <StageGrid />
         
@@ -145,59 +133,7 @@ const resetToSetup = () => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.game-info {
-  text-align: center;
-  margin-bottom: 30px;
-}
 
-.game-info h3 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-}
-
-.player-info {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.player {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.player-name {
-  padding: 8px 16px;
-  border-radius: 20px;
-  color: white;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.player-name.player-1 {
-  background-color: #dc3545;
-}
-
-.player-name.player-2 {
-  background-color: #007bff;
-}
-
-.player-score {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.vs {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #666;
-}
 
 .game-controls {
   text-align: center;
@@ -239,14 +175,7 @@ const resetToSetup = () => {
     padding: 20px;
   }
   
-  .player-info {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .vs {
-    transform: rotate(90deg);
-  }
+
 }
 
 @media (max-width: 480px) {
