@@ -56,10 +56,15 @@
         <span class="ban-count">({{ remainingBans }} remaining)</span>
       </div>
       <div v-else-if="currentPhase === 'selecting'" class="status-message">
-        <span class="player-name" :class="{ 'player-1': isLoserPlayer1, 'player-2': !isLoserPlayer1 }">
-          {{ loserName }}
-        </span>
-        <span class="status-text"> is selecting a stage</span>
+        <div v-if="gameStore.gentlemansAgreement" class="gentlemans-status">
+          <span class="status-text">Gentleman's Agreement: Select any stage</span>
+        </div>
+        <div v-else>
+          <span class="player-name" :class="{ 'player-1': isLoserPlayer1, 'player-2': !isLoserPlayer1 }">
+            {{ loserName }}
+          </span>
+          <span class="status-text"> is selecting a stage</span>
+        </div>
       </div>
     </div>
   </div>
@@ -133,8 +138,14 @@ const isSelected = (stageId: string): boolean => {
 
 const canInteractWithStage = (stageId: string): boolean => {
   if (currentPhase.value === 'setup') return false;
-  if (isBanned(stageId)) return false;
   if (isSelected(stageId)) return false;
+  
+  // In gentleman's agreement mode, any stage can be selected (even banned ones)
+  if (gameStore.gentlemansAgreement && currentPhase.value === 'selecting') {
+    return true;
+  }
+  
+  if (isBanned(stageId)) return false;
   
   if (currentPhase.value === 'banning') {
     return gameStore.currentBanPhase?.phase === 'banning';
@@ -191,7 +202,15 @@ const handleStageClick = (stageId: string) => {
     if (currentPhase.value === 'banning') {
       gameStore.banStage(stageId);
     } else if (currentPhase.value === 'selecting') {
-      gameStore.selectStage(stageId);
+      // In gentleman's agreement mode, any stage can be selected
+      if (gameStore.gentlemansAgreement) {
+        gameStore.selectStage(stageId);
+      } else {
+        // Normal selection mode - only non-banned stages
+        if (!isBanned(stageId)) {
+          gameStore.selectStage(stageId);
+        }
+      }
     }
   } catch (error) {
     console.error('Error handling stage interaction:', error);
@@ -402,6 +421,21 @@ const handleImageError = (event: Event) => {
   font-size: 14px;
   color: #6c757d;
   font-style: italic;
+}
+
+.gentlemans-status {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.gentlemans-status .status-text {
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .image-error {

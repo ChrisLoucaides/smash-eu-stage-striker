@@ -236,6 +236,38 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  function enableGentlemansAgreement() {
+    gentlemansAgreement.value = true;
+    currentPhase.value = 'selecting';
+    stageBans.value.clear(); // Clear any existing bans
+    banOrder.value = [];
+    currentBanIndex.value = 0;
+  }
+
+  function disableGentlemansAgreement() {
+    gentlemansAgreement.value = false;
+    // Reset to appropriate phase based on current game
+    currentPhase.value = 'banning';
+    stageBans.value.clear();
+    
+    if (currentGame.value === 1) {
+      // For game 1, we need to set up the initial ban order
+      // Default to player 1 first, but this could be made configurable
+      banOrder.value = BanService.calculateGame1BanOrder(0);
+    } else {
+      // For games 2+, we need to determine who won the previous game
+      // This is a bit complex, so let's use the last game result
+      if (gameHistory.value.length > 0) {
+        const lastGame = gameHistory.value[gameHistory.value.length - 1];
+        banOrder.value = BanService.calculateGames2PlusBanOrder(lastGame.winner);
+      } else {
+        // Fallback: default to player 1 first
+        banOrder.value = [0, 1];
+      }
+    }
+    currentBanIndex.value = 0;
+  }
+
   return {
     // State
     players,
@@ -267,5 +299,7 @@ export const useGameStore = defineStore('game', () => {
     resetToSetup,
     updatePlayerName,
     updatePlayerScore,
+    enableGentlemansAgreement,
+    disableGentlemansAgreement,
   };
 });

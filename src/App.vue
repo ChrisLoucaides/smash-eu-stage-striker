@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import StageGrid from './components/StageGrid.vue'
 import SetupModal from './components/SetupModal.vue'
 import ScoreBoard from './components/ScoreBoard.vue'
 import GameModal from './components/GameModal.vue'
 import SetCompleteView from './components/SetCompleteView.vue'
+import GentlemansAgreementToggle from './components/GentlemansAgreementToggle.vue'
 import { useGameStore } from './stores/gameStore'
 
 const gameStore = useGameStore()
 const showSetupModal = ref(false)
 const showGameModal = ref(false)
+
+const showGentlemansToggle = computed(() => {
+  return ['banning', 'selecting'].includes(gameStore.currentPhase)
+})
 
 // Show setup modal when in setup phase
 const openSetupModal = () => {
@@ -64,6 +69,9 @@ watch(() => gameStore.currentPhase, (newPhase) => {
       
       <div v-else class="game-section">
         <ScoreBoard />
+        
+        <!-- Gentleman's Agreement Toggle -->
+        <GentlemansAgreementToggle v-if="showGentlemansToggle" />
         
         <StageGrid />
         
