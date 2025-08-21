@@ -232,7 +232,28 @@ export const useGameStore = defineStore('game', () => {
 
   function updatePlayerScore(playerIndex: number, score: number) {
     if (playerIndex >= 0 && playerIndex < players.value.length) {
+      const oldScore = players.value[playerIndex].score;
       players.value[playerIndex].score = Math.max(0, score);
+      
+      // Check if the set is complete after updating the score
+      const winThreshold = matchFormat.value === 'BO3' ? 2 : 3;
+      
+      if (players.value[playerIndex].score >= winThreshold) {
+        // Set is complete
+        currentPhase.value = 'set-complete';
+      } else if (oldScore >= winThreshold && players.value[playerIndex].score < winThreshold) {
+        // Player's score dropped below winning threshold, transition back to game phase
+        if (currentPhase.value === 'set-complete') {
+          // Determine appropriate phase to return to
+          if (selectedStage.value) {
+            currentPhase.value = 'winner-select';
+          } else if (stageBans.value.size > 0) {
+            currentPhase.value = 'selecting';
+          } else {
+            currentPhase.value = 'banning';
+          }
+        }
+      }
     }
   }
 
