@@ -83,51 +83,51 @@ watch(() => gameStore.currentPhase, (newPhase) => {
 .game-view {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--spacing-lg);
 }
 
 .game-section {
   background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
 .winner-prompt {
-  margin: 2rem 0;
+  margin: var(--spacing-xl) 0;
   text-align: center;
 }
 
 .winner-prompt-content {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, var(--color-success) 0%, #20c997 100%);
   color: white;
-  padding: 2rem;
-  border-radius: 12px;
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius);
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
   border: 3px solid rgba(255, 255, 255, 0.2);
 }
 
 .winner-prompt-content h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: var(--font-size-xl);
   font-weight: bold;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .winner-prompt-content p {
-  margin: 0 0 1.5rem 0;
-  font-size: 1.1rem;
+  margin: 0 0 var(--spacing-lg) 0;
+  font-size: var(--font-size-lg);
   opacity: 0.95;
 }
 
 .declare-winner-button {
   background: white;
-  color: #28a745;
+  color: var(--color-success);
   border: none;
-  padding: 12px 30px;
-  font-size: 1.1rem;
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-lg);
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -141,16 +141,16 @@ watch(() => gameStore.currentPhase, (newPhase) => {
 
 .game-controls {
   text-align: center;
-  margin-top: 30px;
+  margin-top: var(--spacing-xl);
 }
 
 .reset-button {
   background: #6c757d;
   color: white;
   border: none;
-  padding: 12px 24px;
-  font-size: 1rem;
-  border-radius: 6px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-md);
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -163,42 +163,42 @@ watch(() => gameStore.currentPhase, (newPhase) => {
 /* Responsive Design */
 @media (max-width: 768px) {
   .game-view {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
   
   .game-section {
-    padding: 20px;
+    padding: var(--spacing-lg);
   }
   
   .winner-prompt-content {
-    padding: 1.5rem;
+    padding: var(--spacing-lg);
   }
   
   .winner-prompt-content h3 {
-    font-size: 1.3rem;
+    font-size: var(--font-size-lg);
   }
   
   .winner-prompt-content p {
-    font-size: 1rem;
+    font-size: var(--font-size-md);
   }
 }
 
 @media (max-width: 480px) {
   .game-section {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
   
   .winner-prompt-content {
-    padding: 1rem;
+    padding: var(--spacing-md);
   }
   
   .winner-prompt-content h3 {
-    font-size: 1.2rem;
+    font-size: var(--font-size-md);
   }
   
   .declare-winner-button {
-    padding: 10px 20px;
-    font-size: 1rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-md);
   }
 }
 </style>

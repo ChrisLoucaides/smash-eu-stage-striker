@@ -219,90 +219,92 @@ function submitForm() {
   max-height: 90vh;
   overflow-y: auto;
   z-index: 1001;
+  margin: 0 auto;
+  padding: var(--spacing-md);
 }
 
 .box {
   background: white;
-  border-radius: 8px;
-  padding: 2rem;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .title {
   text-align: center;
-  color: #333;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-xl);
 }
 
 .field {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-lg);
 }
 
 .label {
   display: block;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-md);
 }
 
 .control {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .input {
   width: 100%;
-  padding: 0.75rem;
+  padding: var(--spacing-md);
   border: 2px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-md);
   transition: border-color 0.2s ease;
 }
 
 .input:focus {
   outline: none;
-  border-color: #3273dc;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(50, 115, 220, 0.1);
 }
 
 .radio {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: var(--font-size-md);
 }
 
 .radio input[type="radio"] {
-  margin-right: 0.5rem;
+  margin-right: var(--spacing-sm);
 }
 
 .checkbox {
-  margin-right: 0.5rem;
+  margin-right: var(--spacing-sm);
 }
 
 .help {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: #666;
-  margin-top: 0.25rem;
+  margin-top: var(--spacing-xs);
 }
 
 .help.is-danger {
-  color: #ff3860;
+  color: var(--color-danger);
 }
 
 .field.is-grouped {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-md);
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: var(--spacing-xl);
 }
 
 .button {
-  padding: 0.75rem 1.5rem;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-md);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -310,7 +312,7 @@ function submitForm() {
 }
 
 .button.is-primary {
-  background-color: #3273dc;
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -326,8 +328,8 @@ function submitForm() {
 }
 
 .button.is-light {
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: var(--color-light);
+  color: var(--color-dark);
   border: 1px solid #ddd;
 }
 
@@ -337,8 +339,8 @@ function submitForm() {
 
 .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
   background: none;
   border: none;
   font-size: 2rem;
@@ -354,19 +356,26 @@ function submitForm() {
 }
 
 .modal-close:hover {
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: var(--color-light);
+  color: var(--color-dark);
 }
 
 /* Responsive Design */
+@media (min-width: 768px) {
+  .modal-content {
+    width: 80%;
+    max-width: 500px;
+  }
+}
+
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;
-    margin: 1rem;
+    margin: var(--spacing-md);
   }
   
   .box {
-    padding: 1.5rem;
+    padding: var(--spacing-lg);
   }
   
   .field.is-grouped {
@@ -382,19 +391,19 @@ function submitForm() {
 
 @media (max-width: 480px) {
   .box {
-    padding: 1rem;
+    padding: var(--spacing-md);
   }
   
   .title {
-    font-size: 1.25rem;
+    font-size: var(--font-size-lg);
   }
   
   .input {
-    padding: 0.5rem;
+    padding: var(--spacing-sm);
   }
   
   .button {
-    padding: 0.5rem 1rem;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 }
 
@@ -403,7 +412,7 @@ function submitForm() {
 .radio input:focus,
 .checkbox:focus,
 .button:focus {
-  outline: 3px solid #3273dc;
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -420,6 +429,18 @@ function submitForm() {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .button:active {
+    transform: scale(0.98);
+  }
+  
+  .modal-close:active {
+    background-color: var(--color-light);
+    color: var(--color-dark);
   }
 }
 </style>

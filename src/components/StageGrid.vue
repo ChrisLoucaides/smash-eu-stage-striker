@@ -234,7 +234,7 @@ const handleImageError = (event: Event) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: var(--spacing-lg);
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
@@ -244,20 +244,21 @@ const handleImageError = (event: Event) => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 12px;
+  gap: var(--spacing-sm);
   width: 100%;
   aspect-ratio: 1;
 }
 
 .stage-item {
   position: relative;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border: 3px solid transparent;
-  background: #f8f9fa;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--color-light);
+  box-shadow: var(--box-shadow);
+  touch-action: manipulation; /* Improve touch experience */
 }
 
 .stage-item:hover {
@@ -274,8 +275,8 @@ const handleImageError = (event: Event) => {
 }
 
 .stage-item.current-turn {
-  border-color: #28a745;
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.3);
+  border-color: var(--selected-color);
+  box-shadow: 0 0 0 3px rgba(35, 209, 96, 0.3);
 }
 
 .stage-item.banned {
@@ -284,18 +285,18 @@ const handleImageError = (event: Event) => {
 }
 
 .stage-item.banned-by-player-1 {
-  border-color: #dc3545;
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.3);
+  border-color: var(--player1-color);
+  box-shadow: 0 0 0 3px rgba(255, 56, 96, 0.3);
 }
 
 .stage-item.banned-by-player-2 {
-  border-color: #007bff;
+  border-color: var(--player2-color);
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
 }
 
 .stage-item.selected {
-  border-color: #28a745;
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5);
+  border-color: var(--selected-color);
+  box-shadow: 0 0 0 3px rgba(35, 209, 96, 0.5);
   transform: scale(1.05);
 }
 
@@ -352,18 +353,18 @@ const handleImageError = (event: Event) => {
 .selection-text {
   display: block;
   font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 4px;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .ban-player {
   display: block;
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   opacity: 0.9;
 }
 
 .hint-text {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   opacity: 0.9;
 }
 
@@ -374,17 +375,17 @@ const handleImageError = (event: Event) => {
   right: 0;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   color: white;
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   text-align: center;
 }
 
 .game-status {
   text-align: center;
-  padding: 16px 24px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-light);
+  border-radius: var(--border-radius);
   border: 1px solid #dee2e6;
   min-width: 300px;
 }
@@ -393,40 +394,40 @@ const handleImageError = (event: Event) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
 }
 
 .player-name {
   font-weight: bold;
-  font-size: 18px;
-  padding: 4px 12px;
+  font-size: var(--font-size-lg);
+  padding: var(--spacing-xs) var(--spacing-md);
   border-radius: 20px;
   color: white;
 }
 
 .player-name.player-1 {
-  background-color: #dc3545;
+  background-color: var(--player1-color);
 }
 
 .player-name.player-2 {
-  background-color: #007bff;
+  background-color: var(--player2-color);
 }
 
 .status-text {
-  font-size: 16px;
+  font-size: var(--font-size-md);
   color: #6c757d;
 }
 
 .ban-count {
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   color: #6c757d;
   font-style: italic;
 }
 
 .gentlemans-status {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, var(--selected-color) 0%, #20c997 100%);
   color: white;
-  padding: 8px 16px;
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 20px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
@@ -435,7 +436,7 @@ const handleImageError = (event: Event) => {
 .gentlemans-status .status-text {
   color: white;
   font-weight: 600;
-  font-size: 16px;
+  font-size: var(--font-size-md);
 }
 
 .image-error {
@@ -450,61 +451,61 @@ const handleImageError = (event: Event) => {
 /* Responsive Design */
 @media (max-width: 768px) {
   .stage-grid {
-    gap: 8px;
+    gap: var(--spacing-sm);
   }
   
   .stage-name {
-    font-size: 12px;
-    padding: 6px 8px;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
   
   .game-status {
-    padding: 12px 16px;
+    padding: var(--spacing-md);
     min-width: 250px;
   }
   
   .status-message {
-    gap: 6px;
+    gap: var(--spacing-xs);
   }
   
   .player-name {
-    font-size: 16px;
-    padding: 3px 10px;
+    font-size: var(--font-size-md);
+    padding: var(--spacing-xs) var(--spacing-md);
   }
   
   .status-text {
-    font-size: 14px;
+    font-size: var(--font-size-sm);
   }
 }
 
 @media (max-width: 480px) {
   .stage-grid {
-    gap: 6px;
+    gap: var(--spacing-xs);
   }
   
   .stage-name {
-    font-size: 11px;
-    padding: 4px 6px;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs);
   }
   
   .game-status {
-    padding: 10px 12px;
+    padding: var(--spacing-sm);
     min-width: 200px;
   }
   
   .player-name {
-    font-size: 14px;
-    padding: 2px 8px;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
   
   .status-text {
-    font-size: 12px;
+    font-size: var(--font-size-sm);
   }
 }
 
 /* Focus styles for accessibility */
 .stage-item:focus-visible {
-  outline: 3px solid #007bff;
+  outline: 3px solid var(--color-info);
   outline-offset: 2px;
 }
 
@@ -516,6 +517,23 @@ const handleImageError = (event: Event) => {
   
   .stage-item:active {
     transform: scale(0.95);
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .stage-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 80%;
+  }
+  
+  .game-status {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.9);
   }
 }
 </style>

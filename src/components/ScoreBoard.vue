@@ -99,19 +99,19 @@ function isScoreMaxReached(playerIndex: number) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-md);
+  background-color: var(--color-light);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--box-shadow);
 }
 
 .player-score {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
   transition: background-color 0.2s ease;
   min-width: 120px;
 }
@@ -123,29 +123,29 @@ function isScoreMaxReached(playerIndex: number) {
 
 .player-name {
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
   text-align: center;
-  color: #363636;
+  color: var(--color-dark);
 }
 
 .score-controls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
 }
 
 .score {
-  font-size: 1.5rem;
+  font-size: var(--font-size-xl);
   font-weight: bold;
-  margin: 0 0.5rem;
+  margin: 0 var(--spacing-sm);
   min-width: 2rem;
   text-align: center;
-  color: #363636;
+  color: var(--color-dark);
 }
 
 .score-btn {
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem; /* Larger touch target */
+  height: 2.5rem;
   border-radius: 50%;
   border: none;
   display: flex;
@@ -153,12 +153,13 @@ function isScoreMaxReached(playerIndex: number) {
   justify-content: center;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg);
   transition: all 0.2s ease;
+  touch-action: manipulation; /* Improve touch experience */
 }
 
 .score-btn.decrease {
-  background-color: #ff3860;
+  background-color: var(--color-danger);
   color: white;
 }
 
@@ -168,7 +169,7 @@ function isScoreMaxReached(playerIndex: number) {
 }
 
 .score-btn.increase {
-  background-color: #23d160;
+  background-color: var(--color-success);
   color: white;
 }
 
@@ -193,13 +194,13 @@ function isScoreMaxReached(playerIndex: number) {
 
 .game-number {
   font-weight: bold;
-  font-size: 1.2rem;
-  color: #363636;
-  margin-bottom: 0.25rem;
+  font-size: var(--font-size-lg);
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-xs);
 }
 
 .match-format {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: #7a7a7a;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -209,8 +210,8 @@ function isScoreMaxReached(playerIndex: number) {
 @media (max-width: 768px) {
   .scoreboard {
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
   }
   
   .player-score {
@@ -221,48 +222,68 @@ function isScoreMaxReached(playerIndex: number) {
   }
   
   .score-controls {
-    gap: 0.75rem;
+    gap: var(--spacing-md);
   }
   
   .score {
-    font-size: 1.75rem;
+    font-size: var(--font-size-xl);
     min-width: 2.5rem;
   }
   
   .score-btn {
     width: 2.5rem;
     height: 2.5rem;
-    font-size: 1.4rem;
+    font-size: var(--font-size-lg);
   }
   
   .match-info {
     order: -1;
     min-width: auto;
     width: 100%;
-    padding: 0.5rem;
+    padding: var(--spacing-sm);
     background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 4px;
+    border-radius: var(--border-radius);
   }
 }
 
 @media (max-width: 480px) {
   .scoreboard {
-    padding: 1rem;
+    padding: var(--spacing-md);
   }
   
   .player-score {
-    padding: 0.75rem;
+    padding: var(--spacing-md);
   }
   
   .score {
-    font-size: 1.5rem;
+    font-size: var(--font-size-lg);
     min-width: 2rem;
   }
   
   .score-btn {
     width: 2.25rem;
     height: 2.25rem;
-    font-size: 1.3rem;
+    font-size: var(--font-size-md);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .score-btn:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .scoreboard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: rgba(245, 245, 245, 0.95);
+    backdrop-filter: blur(5px);
   }
 }
 </style>

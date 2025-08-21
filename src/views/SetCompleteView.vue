@@ -69,82 +69,82 @@ function rematch() {
 .set-complete-view {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--spacing-lg);
 }
 
 .set-complete-container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--spacing-xl);
   text-align: center;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
 .title {
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 2rem;
+  font-size: var(--font-size-xl);
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-xl);
 }
 
 .winner-announcement {
-  margin: 2rem 0;
-  padding: 2rem;
-  background-color: #f5f5f5;
-  border-radius: 8px;
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-xl);
+  background-color: var(--color-light);
+  border-radius: var(--border-radius);
 }
 
 .subtitle {
-  font-size: 1.5rem;
+  font-size: var(--font-size-lg);
   color: #666;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
 }
 
 .winner-name {
-  font-size: 2rem;
+  font-size: var(--font-size-xl);
   font-weight: bold;
-  color: #23d160;
-  margin-bottom: 1rem;
+  color: var(--selected-color);
+  margin-bottom: var(--spacing-md);
 }
 
 .final-score {
-  font-size: 1.2rem;
-  color: #333;
+  font-size: var(--font-size-lg);
+  color: var(--color-dark);
 }
 
 .match-summary {
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-xl);
 }
 
 .match-summary h3 {
-  color: #333;
-  margin-bottom: 1rem;
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-md);
 }
 
 .match-format,
 .games-played {
   color: #666;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .button {
-  padding: 12px 24px;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-md);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .button.is-primary {
-  background-color: #3273dc;
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -153,7 +153,7 @@ function rematch() {
 }
 
 .button.is-info {
-  background-color: #209cee;
+  background-color: var(--color-info);
   color: white;
 }
 
@@ -164,19 +164,19 @@ function rematch() {
 /* Responsive Design */
 @media (max-width: 768px) {
   .set-complete-view {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
   
   .set-complete-container {
-    padding: 1.5rem;
+    padding: var(--spacing-lg);
   }
   
   .title {
-    font-size: 2rem;
+    font-size: var(--font-size-lg);
   }
   
   .winner-name {
-    font-size: 1.5rem;
+    font-size: var(--font-size-lg);
   }
   
   .actions {
@@ -187,19 +187,19 @@ function rematch() {
 
 @media (max-width: 480px) {
   .set-complete-container {
-    padding: 1rem;
+    padding: var(--spacing-md);
   }
   
   .title {
-    font-size: 1.8rem;
+    font-size: var(--font-size-md);
   }
   
   .winner-announcement {
-    padding: 1.5rem;
+    padding: var(--spacing-lg);
   }
   
   .winner-name {
-    font-size: 1.3rem;
+    font-size: var(--font-size-md);
   }
 }
 </style>

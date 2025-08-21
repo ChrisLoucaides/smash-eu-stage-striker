@@ -35,35 +35,35 @@ const closeSetupModal = () => {
 .home-view {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--spacing-lg);
 }
 
 .setup-section {
   text-align: center;
   background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
 .setup-section h2 {
-  color: #333;
-  margin-bottom: 20px;
+  color: var(--color-dark);
+  margin-bottom: var(--spacing-lg);
 }
 
 .setup-section p {
   color: #666;
-  margin-bottom: 30px;
-  font-size: 1.1rem;
+  margin-bottom: var(--spacing-xl);
+  font-size: var(--font-size-lg);
 }
 
 .setup-button {
-  background: #28a745;
+  background: var(--color-success);
   color: white;
   border: none;
-  padding: 15px 30px;
-  font-size: 1.1rem;
-  border-radius: 8px;
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-lg);
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -77,22 +77,22 @@ const closeSetupModal = () => {
 /* Responsive Design */
 @media (max-width: 768px) {
   .home-view {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
   
   .setup-section {
-    padding: 20px;
+    padding: var(--spacing-lg);
   }
 }
 
 @media (max-width: 480px) {
   .setup-section {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
   
   .setup-button {
-    padding: 12px 24px;
-    font-size: 1rem;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-md);
   }
 }
 </style>

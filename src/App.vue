@@ -19,23 +19,23 @@ import SessionRecoveryNotification from './components/SessionRecoveryNotificatio
 .app {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: var(--spacing-lg);
 }
 
 .app-header {
   text-align: center;
   color: white;
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-xl);
 }
 
 .app-header h1 {
-  font-size: 2.5rem;
-  margin: 0 0 10px 0;
+  font-size: var(--font-size-xl);
+  margin: 0 0 var(--spacing-sm) 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .app-header p {
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg);
   margin: 0;
   opacity: 0.9;
 }
@@ -43,21 +43,29 @@ import SessionRecoveryNotification from './components/SessionRecoveryNotificatio
 /* Responsive Design */
 @media (max-width: 768px) {
   .app {
-    padding: 15px;
+    padding: var(--spacing-md);
   }
   
   .app-header h1 {
-    font-size: 2rem;
+    font-size: var(--font-size-lg);
   }
   
   .app-header p {
-    font-size: 1rem;
+    font-size: var(--font-size-md);
   }
 }
 
 @media (max-width: 480px) {
+  .app {
+    padding: var(--spacing-sm);
+  }
+  
   .app-header h1 {
-    font-size: 1.8rem;
+    font-size: var(--font-size-md);
+  }
+  
+  .app-header p {
+    font-size: var(--font-size-sm);
   }
 }
 </style>

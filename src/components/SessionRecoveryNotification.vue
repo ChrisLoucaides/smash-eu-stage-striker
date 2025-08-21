@@ -51,8 +51,8 @@ function startNewSession() {
 <style scoped>
 .session-recovery-notification {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
   z-index: 100;
   max-width: 400px;
 }
@@ -60,9 +60,9 @@ function startNewSession() {
 .notification {
   background: #f0f8ff;
   border: 1px solid #b3d9ff;
-  border-radius: 6px;
-  padding: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--box-shadow);
 }
 
 .notification.is-info {
@@ -72,8 +72,8 @@ function startNewSession() {
 }
 
 .notification p {
-  margin: 0 0 1rem 0;
-  font-size: 0.9rem;
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: var(--font-size-sm);
 }
 
 .delete {
@@ -81,32 +81,32 @@ function startNewSession() {
   border: none;
   float: right;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg);
   color: #666;
-  margin-top: -0.5rem;
+  margin-top: calc(-1 * var(--spacing-sm));
 }
 
 .delete:hover {
-  color: #333;
+  color: var(--color-dark);
 }
 
 .buttons {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
   justify-content: flex-end;
 }
 
 .button {
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .button.is-primary {
-  background-color: #3273dc;
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -115,7 +115,7 @@ function startNewSession() {
 }
 
 .button.is-danger {
-  background-color: #ff3860;
+  background-color: var(--color-danger);
   color: white;
 }
 
@@ -126,8 +126,8 @@ function startNewSession() {
 /* Responsive Design */
 @media (max-width: 768px) {
   .session-recovery-notification {
-    left: 1rem;
-    right: 1rem;
+    left: var(--spacing-md);
+    right: var(--spacing-md);
     max-width: none;
   }
   
@@ -137,6 +137,17 @@ function startNewSession() {
   
   .button {
     width: 100%;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .button:active {
+    transform: scale(0.98);
+  }
+  
+  .delete:active {
+    color: var(--color-dark);
   }
 }
 </style>
