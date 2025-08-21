@@ -20,6 +20,9 @@
       </div>
       
       <div class="game-controls">
+        <button @click="clearBans" class="clear-bans-button" v-if="showClearBansButton">
+          Clear Bans
+        </button>
         <button @click="resetToSetup" class="reset-button">
           Back to Setup
         </button>
@@ -51,6 +54,10 @@ const showGentlemansToggle = computed(() => {
   return ['banning', 'selecting'].includes(gameStore.currentPhase)
 })
 
+const showClearBansButton = computed(() => {
+  return gameStore.currentPhase === 'banning' && gameStore.stageBans.size > 0
+})
+
 // Show game modal when in winner-select phase
 const openGameModal = () => {
   showGameModal.value = true
@@ -58,6 +65,13 @@ const openGameModal = () => {
 
 const closeGameModal = () => {
   showGameModal.value = false
+}
+
+// Clear all bans for the current game
+const clearBans = () => {
+  if (confirm('Are you sure you want to clear all bans for this game? This will reset the ban phase.')) {
+    gameStore.clearBans()
+  }
 }
 
 // Reset to setup phase
@@ -142,6 +156,26 @@ watch(() => gameStore.currentPhase, (newPhase) => {
 .game-controls {
   text-align: center;
   margin-top: var(--spacing-xl);
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.clear-bans-button {
+  background: var(--color-warning);
+  color: white;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-md);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-bans-button:hover {
+  background: #e6c200;
+  transform: translateY(-1px);
 }
 
 .reset-button {

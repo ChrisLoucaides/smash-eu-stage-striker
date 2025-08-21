@@ -268,6 +268,17 @@ export const useGameStore = defineStore('game', () => {
     currentBanIndex.value = 0;
   }
 
+  function clearBans() {
+    // Clear all stage bans for the current game
+    stageBans.value.clear();
+    // Reset ban index to start over
+    currentBanIndex.value = 0;
+    // Reset to banning phase if we were in selection
+    if (currentPhase.value === 'selecting') {
+      currentPhase.value = 'banning';
+    }
+  }
+
   return {
     // State
     players,
@@ -301,23 +312,12 @@ export const useGameStore = defineStore('game', () => {
     updatePlayerScore,
     enableGentlemansAgreement,
     disableGentlemansAgreement,
+    clearBans,
   };
 }, {
   persist: {
     key: 'smash-stage-ban-app',
     storage: localStorage,
-    // Only persist these fields
-    paths: [
-      'players', 
-      'currentGame', 
-      'matchFormat', 
-      'currentPhase',
-      'banOrder',
-      'currentBanIndex',
-      'selectedStage',
-      'gentlemansAgreement',
-      'gameHistory'
-    ],
     // Custom serialization for Map objects
     serializer: {
       serialize: (state) => {

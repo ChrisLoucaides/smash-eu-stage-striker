@@ -54,6 +54,13 @@
         </span>
         <span class="status-text"> is banning</span>
         <span class="ban-count">({{ remainingBans }} remaining)</span>
+        
+        <!-- Clear Bans Button -->
+        <div v-if="stageBans.size > 0" class="clear-bans-section">
+          <button @click="clearBans" class="clear-bans-btn" aria-label="Clear all bans">
+            Clear All Bans
+          </button>
+        </div>
       </div>
       <div v-else-if="currentPhase === 'selecting'" class="status-message">
         <div v-if="gameStore.gentlemansAgreement" class="gentlemans-status">
@@ -225,6 +232,12 @@ const handleImageError = (event: Event) => {
   const container = img.parentElement;
   if (container) {
     container.classList.add('image-error');
+  }
+};
+
+const clearBans = () => {
+  if (confirm('Are you sure you want to clear all bans for this game? This will reset the ban phase.')) {
+    gameStore.clearBans();
   }
 };
 </script>
@@ -437,6 +450,32 @@ const handleImageError = (event: Event) => {
   color: white;
   font-weight: 600;
   font-size: var(--font-size-md);
+}
+
+.clear-bans-section {
+  margin-top: var(--spacing-sm);
+}
+
+.clear-bans-btn {
+  background-color: var(--color-danger);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 56, 96, 0.3);
+}
+
+.clear-bans-btn:hover {
+  background-color: #e02e4f;
+}
+
+.clear-bans-btn:focus-visible {
+  outline: 3px solid var(--color-info);
+  outline-offset: 2px;
 }
 
 .image-error {
