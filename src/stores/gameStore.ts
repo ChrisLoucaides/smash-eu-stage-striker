@@ -302,4 +302,40 @@ export const useGameStore = defineStore('game', () => {
     enableGentlemansAgreement,
     disableGentlemansAgreement,
   };
+}, {
+  persist: {
+    key: 'smash-stage-ban-app',
+    storage: localStorage,
+    // Only persist these fields
+    paths: [
+      'players', 
+      'currentGame', 
+      'matchFormat', 
+      'currentPhase',
+      'banOrder',
+      'currentBanIndex',
+      'selectedStage',
+      'gentlemansAgreement',
+      'gameHistory'
+    ],
+    // Custom serialization for Map objects
+    serializer: {
+      serialize: (state) => {
+        const serializedState = { ...state }
+        // Convert Map to array of entries for serialization
+        if (state.stageBans instanceof Map) {
+          serializedState.stageBans = Array.from(state.stageBans.entries())
+        }
+        return JSON.stringify(serializedState)
+      },
+      deserialize: (serializedState) => {
+        const state = JSON.parse(serializedState)
+        // Convert array of entries back to Map
+        if (Array.isArray(state.stageBans)) {
+          state.stageBans = new Map(state.stageBans)
+        }
+        return state
+      }
+    }
+  }
 });

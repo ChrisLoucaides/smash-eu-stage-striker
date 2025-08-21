@@ -106,6 +106,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useGameStore } from '../stores/gameStore'
 import type { MatchFormat } from '../types'
 
@@ -116,6 +117,7 @@ defineProps<{
 const emit = defineEmits(['close'])
 
 const gameStore = useGameStore()
+const router = useRouter()
 
 // Form data
 const player1Name = ref('Player 1')
@@ -174,6 +176,8 @@ function submitForm() {
       gentlemansAgreement: gentlemansAgreement.value,
     })
     closeModal()
+    // Navigate to game view after successful setup
+    router.push('/game')
   } catch (error) {
     console.error('Error setting up match:', error)
     // You could add a toast notification here for user feedback

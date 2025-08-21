@@ -190,3 +190,4 @@ describe('SetCompleteView', () => {
     expect(wrapper.text()).toContain('Total Stage Bans: 0')
   })
 })
+
