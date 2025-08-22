@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 import type { Player, MatchFormat, GamePhase, MatchSetup, GameResult } from '../types';
 import { BanService } from '../services/BanService';
 import { StageService } from '../services/StageService';
@@ -20,6 +20,19 @@ export const useGameStore = defineStore('game', () => {
   const selectedStage = ref<string | null>(null);
   const gentlemansAgreement = ref(false);
   const gameHistory = ref<GameResult[]>([]);
+
+  // Ensure stageBans is properly restored after persistence
+  watch(stageBans, (newStageBans) => {
+    // If stageBans is somehow not a Map after restoration, fix it
+    if (!(newStageBans instanceof Map)) {
+      console.warn('stageBans was not a Map, fixing...');
+      if (Array.isArray(newStageBans)) {
+        stageBans.value = new Map(newStageBans);
+      } else {
+        stageBans.value = new Map();
+      }
+    }
+  }, { immediate: true });
 
   // Getters
   const currentPlayer = computed(() => {
@@ -268,6 +281,96 @@ export const useGameStore = defineStore('game', () => {
     currentBanIndex.value = 0;
   }
 
+  function clearBans() {
+    stageBans.value.clear();
+    currentBanIndex.value = 0;
+    // Reset to banning phase if we were in selection phase
+    if (currentPhase.value === 'selecting') {
+      currentPhase.value = 'banning';
+    }
+  }
+
+  function validateRestoredState() {
+    // Ensure stageBans is a Map
+    if (!(stageBans.value instanceof Map)) {
+      console.warn('stageBans was not a Map after restoration, fixing...');
+      if (Array.isArray(stageBans.value)) {
+        stageBans.value = new Map(stageBans.value);
+      } else {
+        stageBans.value = new Map();
+      }
+    }
+    
+    // Ensure banOrder is an array
+    if (!Array.isArray(banOrder.value)) {
+      console.warn('banOrder was not an array after restoration, fixing...');
+      banOrder.value = [];
+    }
+    
+    // Ensure currentBanIndex is a number
+    if (typeof currentBanIndex.value !== 'number') {
+      console.warn('currentBanIndex was not a number after restoration, fixing...');
+      currentBanIndex.value = 0;
+    }
+    
+    // Ensure currentPhase is valid
+    const validPhases: GamePhase[] = ['setup', 'banning', 'selecting', 'winner-select', 'set-complete'];
+    if (!validPhases.includes(currentPhase.value)) {
+      console.warn('currentPhase was invalid after restoration, fixing...');
+      currentPhase.value = 'setup';
+    }
+    
+    // Ensure currentGame is a number
+    if (typeof currentGame.value !== 'number') {
+      console.warn('currentGame was not a number after restoration, fixing...');
+      currentGame.value = 1;
+    }
+    
+    // Ensure players array is valid
+    if (!Array.isArray(players.value) || players.value.length !== 2) {
+      console.warn('players array was invalid after restoration, fixing...');
+      players.value = [
+        { id: 0, name: 'Player 1', score: 0 },
+        { id: 1, name: 'Player 2', score: 0 },
+      ];
+    }
+    
+    // Ensure gameHistory is an array
+    if (!Array.isArray(gameHistory.value)) {
+      console.warn('gameHistory was not an array after restoration, fixing...');
+      gameHistory.value = [];
+    }
+    
+    // Ensure gentlemansAgreement is a boolean
+    if (typeof gentlemansAgreement.value !== 'boolean') {
+      console.warn('gentlemansAgreement was not a boolean after restoration, fixing...');
+      gentlemansAgreement.value = false;
+    }
+    
+    // Ensure matchFormat is valid
+    const validFormats: MatchFormat[] = ['BO3', 'BO5'];
+    if (!validFormats.includes(matchFormat.value)) {
+      console.warn('matchFormat was invalid after restoration, fixing...');
+      matchFormat.value = 'BO3';
+    }
+    
+    // Ensure selectedStage is either null or a string
+    if (selectedStage.value !== null && typeof selectedStage.value !== 'string') {
+      console.warn('selectedStage was invalid after restoration, fixing...');
+      selectedStage.value = null;
+    }
+    
+    console.log('Store state validated and fixed after restoration:', {
+      currentPhase: currentPhase.value,
+      currentGame: currentGame.value,
+      currentBanIndex: currentBanIndex.value,
+      banOrder: banOrder.value,
+      stageBansSize: stageBans.value.size,
+      players: players.value,
+      gentlemansAgreement: gentlemansAgreement.value
+    });
+  }
+
   return {
     // State
     players,
@@ -301,5 +404,31 @@ export const useGameStore = defineStore('game', () => {
     updatePlayerScore,
     enableGentlemansAgreement,
     disableGentlemansAgreement,
+    clearBans,
+    validateRestoredState,
   };
+}, {
+  persist: {
+    key: 'smash-eu-game-state',
+    storage: localStorage,
+    // Custom serialization to handle Map objects
+    serializer: {
+      serialize: (value: any) => {
+        // Convert Map to array for serialization
+        const serialized = { ...value };
+        if (serialized.stageBans instanceof Map) {
+          serialized.stageBans = Array.from(serialized.stageBans.entries());
+        }
+        return JSON.stringify(serialized);
+      },
+      deserialize: (value: string) => {
+        const parsed = JSON.parse(value);
+        // Convert array back to Map
+        if (parsed.stageBans && Array.isArray(parsed.stageBans)) {
+          parsed.stageBans = new Map(parsed.stageBans);
+        }
+        return parsed;
+      }
+    }
+  }
 });

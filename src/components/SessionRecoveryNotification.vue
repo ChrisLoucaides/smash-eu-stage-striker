@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useGameStore } from '../stores/gameStore'
 import { useRouter } from 'vue-router'
 
@@ -22,8 +22,30 @@ const showNotification = ref(false)
 
 onMounted(() => {
   // Check if there's a saved session that's not in setup phase
+  console.log('SessionRecoveryNotification mounted, currentPhase:', gameStore.currentPhase);
   if (gameStore.currentPhase !== 'setup') {
+    console.log('Showing session recovery notification');
     showNotification.value = true
+    // Auto-navigate to the appropriate view after a short delay
+    setTimeout(() => {
+      console.log('Auto-navigating to appropriate view, currentPhase:', gameStore.currentPhase);
+      if (gameStore.currentPhase === 'set-complete') {
+        router.push('/set-complete')
+      } else if (gameStore.currentPhase !== 'setup') {
+        router.push('/game')
+      }
+    }, 100)
+  }
+})
+
+// Watch for phase changes to auto-navigate
+watch(() => gameStore.currentPhase, (newPhase) => {
+  if (newPhase !== 'setup' && showNotification.value) {
+    if (newPhase === 'set-complete') {
+      router.push('/set-complete')
+    } else {
+      router.push('/game')
+    }
   }
 })
 

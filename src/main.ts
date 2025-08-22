@@ -4,7 +4,6 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import './style.css'
 import App from './App.vue'
 import router from './router'
-import { useGameStore } from './stores/gameStore'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -14,3 +13,15 @@ app.use(pinia)
 app.use(router)
 
 app.mount('#app')
+
+// Validate restored store state after app is mounted
+import('./stores/gameStore').then(({ useGameStore }) => {
+  const gameStore = useGameStore()
+  // Wait for store to be fully restored
+  setTimeout(() => {
+    gameStore.validateRestoredState()
+  }, 100)
+}).catch(() => {
+  // If store import fails, just continue
+  console.warn('Could not validate store state')
+})
