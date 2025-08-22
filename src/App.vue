@@ -7,7 +7,7 @@ import SessionRecoveryNotification from './components/SessionRecoveryNotificatio
   <div class="app">
     <header class="app-header">
       <h1>SmashEU Ruleset Stage Striker (Beta)</h1>
-      <p>Tournament Stage Ban Tool</p>
+      <p>Tournament Stage Ban Tool - made by Afro</p>
     </header>
     
     <SessionRecoveryNotification />
