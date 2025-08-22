@@ -25,7 +25,6 @@ import SessionRecoveryNotification from './components/SessionRecoveryNotificatio
 .app-header {
   text-align: center;
   color: white;
-  margin-bottom: var(--spacing-xl);
 }
 
 .app-header h1 {

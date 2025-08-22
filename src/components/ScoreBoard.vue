@@ -9,7 +9,7 @@
           :disabled="players[0].score <= 0"
           aria-label="Decrease score for Player 1"
         >
-          -
+          <span>-</span>
         </button>
         <div class="score">{{ players[0].score }}</div>
         <button 
@@ -18,7 +18,7 @@
           :disabled="isScoreMaxReached(0)"
           aria-label="Increase score for Player 1"
         >
-          +
+          <span>+</span>
         </button>
       </div>
     </div>
@@ -37,7 +37,7 @@
           :disabled="players[1].score <= 0"
           aria-label="Decrease score for Player 2"
         >
-          -
+          <span>-</span>
         </button>
         <div class="score">{{ players[1].score }}</div>
         <button 
@@ -46,7 +46,7 @@
           :disabled="isScoreMaxReached(1)"
           aria-label="Increase score for Player 2"
         >
-          +
+          <span>+</span>
         </button>
       </div>
     </div>
@@ -145,8 +145,8 @@ function isScoreMaxReached(playerIndex: number) {
 
 .score-btn {
   width: 2.5rem; /* Larger touch target */
-  height: 2.5rem;
-  border-radius: 50%;
+  height: 3.2rem;
+  border-radius: 100%;
   border: none;
   display: flex;
   align-items: center;
@@ -156,6 +156,10 @@ function isScoreMaxReached(playerIndex: number) {
   font-size: var(--font-size-lg);
   transition: all 0.2s ease;
   touch-action: manipulation; /* Improve touch experience */
+}
+
+.score-btn span{
+  margin-bottom: 0.3em
 }
 
 .score-btn.decrease {
@@ -232,7 +236,7 @@ function isScoreMaxReached(playerIndex: number) {
   
   .score-btn {
     width: 2.5rem;
-    height: 2.5rem;
+    height: 2.5em;
     font-size: var(--font-size-lg);
   }
   
