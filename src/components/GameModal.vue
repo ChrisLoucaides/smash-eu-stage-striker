@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <button class="modal-close is-large" @click="closeModal"></button>
+    <button class="modal-close is-large" @click="closeModal"><span>x</span></button>
   </div>
 </template>
 
@@ -176,9 +176,9 @@ function confirmWinner(playerIndex: number) {
   cursor: pointer;
   z-index: 60;
   width: 2rem;
-  height: 2rem;
+  height: 3.4rem;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #e84f4f;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,10 +187,18 @@ function confirmWinner(playerIndex: number) {
   transition: all 0.2s ease;
 }
 
+.modal-close span {
+  color: #1a1a1a;
+  margin-bottom: 5px;
+}
+
 .modal-close:hover {
-  background-color: white;
-  color: #363636;
+  background-color: #731717;
   transform: scale(1.1);
+}
+
+.modal-close:hover span{
+  color: #b0aeae;
 }
 
 /* Responsive design */
