@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import ScoreBoard from '../components/ScoreBoard.vue'
 import StageGrid from '../components/StageGrid.vue'
@@ -81,14 +81,45 @@ const resetToSetup = () => {
 }
 
 // Watch for phase changes to show game modal
-watch(() => gameStore.currentPhase, (newPhase) => {
+watch(() => gameStore.currentPhase, (newPhase, oldPhase) => {
+  console.log(`Phase changed: ${oldPhase} → ${newPhase}`);
+  
   if (newPhase === 'winner-select') {
     openGameModal()
   }
   
   // Navigate to set-complete when set is finished
   if (newPhase === 'set-complete') {
-    router.push('/set-complete')
+    console.log('Navigating to set-complete page');
+    nextTick(() => {
+      // Check if we're already on the set-complete page
+      if (router.currentRoute.value.name !== 'set-complete') {
+        router.push('/set-complete').catch(error => {
+          console.error('Navigation failed:', error);
+        })
+      } else {
+        console.log('Already on set-complete page');
+      }
+    })
+  }
+})
+
+// Also watch for match completion to ensure navigation
+watch(() => gameStore.isSetComplete, (isComplete) => {
+  console.log(`Match completion status: ${isComplete}, current phase: ${gameStore.currentPhase}`);
+  if (isComplete && gameStore.currentPhase !== 'set-complete') {
+    console.log('Match complete detected, navigating to set-complete page');
+    nextTick(() => {
+      console.log('Executing navigation to set-complete');
+      // Check if we're already on the set-complete page
+      if (router.currentRoute.value.name !== 'set-complete') {
+        router.push('/set-complete').catch(error => {
+          console.error('Navigation failed:', error);
+        })
+      } else {
+        console.log('Already on set-complete page');
+      }
+    })
   }
 })
 </script>

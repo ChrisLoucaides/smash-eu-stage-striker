@@ -34,6 +34,48 @@ export const useGameStore = defineStore('game', () => {
     }
   }, { immediate: true });
 
+  // Watch for score changes to automatically end the match when a player wins
+  watch(() => players.value.map(p => p.score), (newScores, oldScores) => {
+    console.log('Score watcher triggered:', { newScores, oldScores, currentPhase: currentPhase.value });
+    
+    // Skip if we're already complete
+    if (currentPhase.value === 'set-complete') {
+      console.log('Skipping - already complete');
+      return;
+    }
+    
+    // Skip if this is the initial setup (scores going from undefined to 0)
+    if (!oldScores || (oldScores.every(score => score === 0) && newScores.every(score => score === 0))) {
+      console.log('Skipping - initial setup');
+      return;
+    }
+    
+    // Skip if we're in the middle of state restoration
+    if (gameHistory.value.length === 0 && newScores.some(score => score > 0)) {
+      console.log('Skipping - state restoration');
+      return;
+    }
+    
+    // Skip if this is the very first time the watcher runs
+    if (oldScores === undefined) {
+      console.log('Skipping - first run');
+      return;
+    }
+    
+    // Check if any player has reached the winning threshold
+    const winThreshold = matchFormat.value === 'BO3' ? 2 : 3;
+    const hasWinner = newScores.some(score => score >= winThreshold);
+    
+    console.log(`Checking for winner: threshold=${winThreshold}, hasWinner=${hasWinner}`);
+    
+    if (hasWinner) {
+      console.log(`Match ended: Player reached winning threshold (${winThreshold})`);
+      console.log(`Current phase before change: ${currentPhase.value}`);
+      currentPhase.value = 'set-complete';
+      console.log(`Current phase after change: ${currentPhase.value}`);
+    }
+  }, { deep: true });
+
   // Getters
   const currentPlayer = computed(() => {
     if (currentPhase.value !== 'banning') return null;
@@ -245,7 +287,17 @@ export const useGameStore = defineStore('game', () => {
 
   function updatePlayerScore(playerIndex: number, score: number) {
     if (playerIndex >= 0 && playerIndex < players.value.length) {
-      players.value[playerIndex].score = Math.max(0, score);
+      // Prevent negative scores
+      const minScore = Math.max(0, score);
+      
+      // Prevent scores above the maximum threshold
+      const maxScore = matchFormat.value === 'BO3' ? 2 : 3;
+      const clampedScore = Math.min(minScore, maxScore);
+      
+      const oldScore = players.value[playerIndex].score;
+      players.value[playerIndex].score = clampedScore;
+      
+      console.log(`Score updated: Player ${playerIndex} ${oldScore} → ${clampedScore} (${matchFormat.value})`);
     }
   }
 

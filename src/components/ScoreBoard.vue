@@ -1,12 +1,12 @@
 <template>
-  <div class="scoreboard">
+  <div class="scoreboard" :class="{ 'match-complete': isMatchComplete }">
     <div class="player-score" :class="{ 'is-active': isPlayerActive(0) }">
       <div class="player-name">{{ players[0].name }}</div>
       <div class="score-controls">
         <button 
           class="score-btn decrease" 
           @click="decreaseScore(0)" 
-          :disabled="players[0].score <= 0"
+          :disabled="players[0].score <= 0 || isMatchComplete"
           aria-label="Decrease score for Player 1"
         >
           <span>-</span>
@@ -15,7 +15,7 @@
         <button 
           class="score-btn increase" 
           @click="increaseScore(0)" 
-          :disabled="isScoreMaxReached(0)"
+          :disabled="isScoreMaxReached(0) || isMatchComplete"
           aria-label="Increase score for Player 1"
         >
           <span>+</span>
@@ -34,7 +34,7 @@
         <button 
           class="score-btn decrease" 
           @click="decreaseScore(1)" 
-          :disabled="players[1].score <= 0"
+          :disabled="players[1].score <= 0 || isMatchComplete"
           aria-label="Decrease score for Player 2"
         >
           <span>-</span>
@@ -43,7 +43,7 @@
         <button 
           class="score-btn increase" 
           @click="increaseScore(1)" 
-          :disabled="isScoreMaxReached(1)"
+          :disabled="isScoreMaxReached(1) || isMatchComplete"
           aria-label="Increase score for Player 2"
         >
           <span>+</span>
@@ -65,11 +65,15 @@ const matchFormat = computed(() => gameStore.matchFormat === 'BO3' ? 'Best of 3'
 const currentPhase = computed(() => gameStore.currentPhase)
 const currentPlayer = computed(() => gameStore.currentPlayer)
 
+const isMatchComplete = computed(() => gameStore.isSetComplete)
+
 function isPlayerActive(playerIndex: number) {
   return currentPhase.value === 'banning' && currentPlayer.value?.id === playerIndex
 }
 
 function decreaseScore(playerIndex: number) {
+  if (isMatchComplete.value) return;
+  
   if (players.value[playerIndex].score > 0) {
     // Create a confirmation dialog for score changes
     if (confirm(`Decrease ${players.value[playerIndex].name}'s score?`)) {
@@ -79,6 +83,8 @@ function decreaseScore(playerIndex: number) {
 }
 
 function increaseScore(playerIndex: number) {
+  if (isMatchComplete.value) return;
+  
   const maxScore = gameStore.matchFormat === 'BO3' ? 2 : 3
   if (players.value[playerIndex].score < maxScore) {
     // Create a confirmation dialog for score changes
@@ -104,6 +110,29 @@ function isScoreMaxReached(playerIndex: number) {
   border-radius: var(--border-radius);
   margin-bottom: var(--spacing-md);
   box-shadow: var(--box-shadow);
+}
+
+.scoreboard.match-complete {
+  background-color: #f8f9fa;
+  border: 2px solid #6c757d;
+  opacity: 0.9;
+  position: relative;
+}
+
+.scoreboard.match-complete::after {
+  content: "Match Complete";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-success);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .player-score {
@@ -186,6 +215,12 @@ function isScoreMaxReached(playerIndex: number) {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+}
+
+.scoreboard.match-complete .score-btn:disabled {
+  opacity: 0.3;
+  background-color: #6c757d;
+  color: #adb5bd;
 }
 
 .match-info {
