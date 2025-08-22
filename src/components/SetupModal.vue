@@ -254,10 +254,15 @@ function submitForm() {
 }
 
 .input {
+  background-color: #d8dbe0;
+  text-align: center;
+  font-weight: bold;
+  color: #1a1a1a;
   width: 100%;
-  padding: var(--spacing-md);
-  border: 2px solid #ddd;
-  border-radius: var(--border-radius);
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border: 2px solid #030303;
+  border-radius: 30px;
   font-size: var(--font-size-md);
   transition: border-color 0.2s ease;
 }
@@ -270,6 +275,7 @@ function submitForm() {
 
 .radio {
   display: block;
+  color: #1a1a1a;
   margin-bottom: var(--spacing-sm);
   cursor: pointer;
   font-size: var(--font-size-md);
