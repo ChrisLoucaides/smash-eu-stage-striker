@@ -5,8 +5,16 @@
       <div class="box">
         <h2 class="title">Game {{ currentGame }} Result</h2>
         
-        <div v-if="selectedStage" class="selected-stage">
-          <p>Stage: {{ selectedStage }}</p>
+        <div v-if="selectedStageInfo" class="selected-stage">
+          <div class="stage-image-container">
+            <img 
+              :src="selectedStageInfo.imageUrl" 
+              :alt="selectedStageInfo.name"
+              class="stage-image"
+              @error="handleImageError"
+            />
+          </div>
+          <p class="stage-name">{{ selectedStageInfo.name }}</p>
         </div>
         
         <div class="winner-selection">
@@ -35,6 +43,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useGameStore } from '../stores/gameStore'
+import { StageService } from '../services/StageService'
+import type { Stage } from '../types'
 
 defineProps<{
   isOpen: boolean
@@ -48,6 +58,12 @@ const players = computed(() => gameStore.players)
 const currentGame = computed(() => gameStore.currentGame)
 const selectedStage = computed(() => gameStore.selectedStage)
 
+// Get the full stage information including image
+const selectedStageInfo = computed((): Stage | null => {
+  if (!selectedStage.value) return null
+  return StageService.getStageById(selectedStage.value) || null
+})
+
 function closeModal() {
   emit('close')
 }
@@ -55,6 +71,12 @@ function closeModal() {
 function confirmWinner(playerIndex: number) {
   gameStore.declareWinner(playerIndex)
   closeModal()
+}
+
+function handleImageError(event: Event) {
+  const img = event.target as HTMLImageElement
+  // Fallback to a placeholder or hide the image if it fails to load
+  img.style.display = 'none'
 }
 </script>
 
@@ -112,7 +134,22 @@ function confirmWinner(playerIndex: number) {
   text-align: center;
 }
 
-.selected-stage p {
+.stage-image-container {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.stage-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.stage-name {
   margin: 0;
   font-size: 1.1rem;
   color: #363636;
@@ -221,6 +258,10 @@ function confirmWinner(playerIndex: number) {
     width: 100%;
     max-width: 200px;
   }
+  
+  .stage-image {
+    max-height: 150px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -238,6 +279,10 @@ function confirmWinner(playerIndex: number) {
   
   .winner-selection p {
     font-size: 1rem;
+  }
+  
+  .stage-image {
+    max-height: 120px;
   }
 }
 </style>
