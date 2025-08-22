@@ -317,7 +317,7 @@ const clearBans = () => {
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  padding-bottom: 70%; /* 16:9 aspect ratio */
   overflow: hidden;
 }
 
@@ -388,8 +388,8 @@ const clearBans = () => {
   right: 0;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   color: white;
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: var(--font-size-sm);
+  padding: 20px var(--spacing-md); /* Reduced top/bottom padding from var(--spacing-sm) to var(--spacing-xs) */
+  font-size: 0.85em;
   font-weight: 600;
   text-align: center;
 }

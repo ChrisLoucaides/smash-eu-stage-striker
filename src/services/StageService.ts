@@ -1,60 +1,59 @@
 import type { Stage } from '../types';
-import { PlaceholderImageService } from './PlaceholderImageService';
 
 // All 9 legal stages for competitive Smash Bros. Ultimate
 export const LEGAL_STAGES: Stage[] = [
   {
     id: 'battlefield',
     name: 'Battlefield',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('battlefield'),
+    imageUrl: '/assets/stages/battlefield.png',
     isLegal: true,
   },
   {
     id: 'final-destination',
     name: 'Final Destination',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('final-destination'),
+    imageUrl: '/assets/stages/final-destination.png',
     isLegal: true,
   },
   {
     id: 'small-battlefield',
     name: 'Small Battlefield',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('small-battlefield'),
+    imageUrl: '/assets/stages/small-battlefield.png',
     isLegal: true,
   },
   {
     id: 'pokemon-stadium-2',
     name: 'Pokémon Stadium 2',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('pokemon-stadium-2'),
+    imageUrl: '/assets/stages/pokemon-stadium-2.png',
     isLegal: true,
   },
   {
     id: 'smashville',
     name: 'Smashville',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('smashville'),
+    imageUrl: '/assets/stages/smashville.png',
     isLegal: true,
   },
   {
     id: 'town-and-city',
     name: 'Town and City',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('town-and-city'),
+    imageUrl: '/assets/stages/town-and-city.png',
     isLegal: true,
   },
   {
     id: 'kalos-pokemon-league',
     name: 'Kalos Pokémon League',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('kalos-pokemon-league'),
+    imageUrl: '/assets/stages/kalos-pokemon-league.png',
     isLegal: true,
   },
   {
     id: 'hollow-bastion',
     name: 'Hollow Bastion',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('hollow-bastion'),
+    imageUrl: '/assets/stages/hollow-bastion.png',
     isLegal: true,
   },
   {
     id: 'yoshis-story',
     name: 'Yoshi\'s Story',
-    imageUrl: PlaceholderImageService.getPlaceholderImage('yoshis-story'),
+    imageUrl: '/assets/stages/yoshis-story.png',
     isLegal: true,
   },
 ];
