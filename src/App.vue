@@ -6,7 +6,7 @@ import SessionRecoveryNotification from './components/SessionRecoveryNotificatio
 <template>
   <div class="app">
     <header class="app-header">
-      <h1>Smash Stage Striker</h1>
+      <h1>SmashEU Ruleset Stage Striker</h1>
       <p>Tournament Stage Ban Tool</p>
     </header>
     
@@ -18,7 +18,7 @@ import SessionRecoveryNotification from './components/SessionRecoveryNotificatio
 <style scoped>
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /*background: linear-gradient(135deg, #ffffff 0%, #c7dcfa 100%);*/
   padding: var(--spacing-lg);
 }
 
@@ -30,12 +30,14 @@ import SessionRecoveryNotification from './components/SessionRecoveryNotificatio
 
 .app-header h1 {
   font-size: var(--font-size-xl);
+  color: #1a1a1a;
   margin: 0 0 var(--spacing-sm) 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .app-header p {
   font-size: var(--font-size-lg);
+  color: #1a1a1a;
   margin: 0;
   opacity: 0.9;
 }

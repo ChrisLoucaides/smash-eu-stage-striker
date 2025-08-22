@@ -1,17 +1,25 @@
 <template>
   <div class="home-view">
     <div class="setup-section">
-      <h2>Match Setup</h2>
-      <p>Configure your match settings to get started with stage banning.</p>
+      <h2>Ruleset</h2>
+      <p>This app allows for stage bans using the SmashEU rulest</p>
+      <ul>
+        <li>3 Stocks</li>
+        <li>7 Minutes</li>
+        <li>Declare Characters First, ask for double blind if needed</li>
+        <li>Rock Paper Scissors (RPS) to determine who bans first</li>
+        <li>Game 1 only: Winner bans 3, Loser bans 4, Winner picks</li>
+        <li>Game 2+: Winner bans 3, Loser picks</li>
+      </ul>
       <button @click="openSetupModal" class="setup-button">
-        Configure Match
+        Player/Match Setup
       </button>
     </div>
-    
+
     <!-- Setup Modal -->
-    <SetupModal 
-      :is-open="showSetupModal" 
-      @close="closeSetupModal" 
+    <SetupModal
+      :is-open="showSetupModal"
+      @close="closeSetupModal"
     />
   </div>
 </template>
@@ -40,10 +48,10 @@ const closeSetupModal = () => {
 
 .setup-section {
   text-align: center;
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #d0deef 100%);
   padding: var(--spacing-xl);
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 .setup-section h2 {
@@ -51,10 +59,16 @@ const closeSetupModal = () => {
   margin-bottom: var(--spacing-lg);
 }
 
-.setup-section p {
+.setup-section p{
   color: #666;
   margin-bottom: var(--spacing-xl);
   font-size: var(--font-size-lg);
+}
+
+li{
+  color: #666;
+  font-size: var(--font-size-lg);
+  text-align: left;
 }
 
 .setup-button {
@@ -65,6 +79,7 @@ const closeSetupModal = () => {
   font-size: var(--font-size-lg);
   border-radius: var(--border-radius);
   cursor: pointer;
+  box-shadow: var(--box-shadow);
   transition: all 0.3s ease;
 }
 
@@ -79,7 +94,7 @@ const closeSetupModal = () => {
   .home-view {
     padding: var(--spacing-md);
   }
-  
+
   .setup-section {
     padding: var(--spacing-lg);
   }
@@ -89,7 +104,7 @@ const closeSetupModal = () => {
   .setup-section {
     padding: var(--spacing-md);
   }
-  
+
   .setup-button {
     padding: var(--spacing-md) var(--spacing-lg);
     font-size: var(--font-size-md);
