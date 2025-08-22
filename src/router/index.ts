@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+import GameView from '../views/GameView.vue'
+import SetCompleteView from '../views/SetCompleteView.vue'
 import { useGameStore } from '../stores/gameStore'
 
 const router = createRouter({
@@ -7,27 +10,30 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: HomeView
     },
     {
       path: '/game',
       name: 'game',
-      component: () => import('../views/GameView.vue')
+      component: GameView
     },
     {
       path: '/set-complete',
       name: 'set-complete',
-      component: () => import('../views/SetCompleteView.vue'),
-      beforeEnter: (to, from, next) => {
-        const gameStore = useGameStore()
-        if (gameStore.currentPhase !== 'set-complete') {
-          next('/')
-        } else {
-          next()
-        }
-      }
+      component: SetCompleteView
     }
   ]
+})
+
+// Navigation guard to check game state
+router.beforeEach((to, from, next) => {
+  const gameStore = useGameStore()
+  
+  if (gameStore.currentPhase === 'set-complete' && to.name !== 'set-complete') {
+    next({ name: 'set-complete' })
+  } else {
+    next()
+  }
 })
 
 export default router

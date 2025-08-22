@@ -232,28 +232,7 @@ export const useGameStore = defineStore('game', () => {
 
   function updatePlayerScore(playerIndex: number, score: number) {
     if (playerIndex >= 0 && playerIndex < players.value.length) {
-      const oldScore = players.value[playerIndex].score;
       players.value[playerIndex].score = Math.max(0, score);
-      
-      // Check if the set is complete after updating the score
-      const winThreshold = matchFormat.value === 'BO3' ? 2 : 3;
-      
-      if (players.value[playerIndex].score >= winThreshold) {
-        // Set is complete
-        currentPhase.value = 'set-complete';
-      } else if (oldScore >= winThreshold && players.value[playerIndex].score < winThreshold) {
-        // Player's score dropped below winning threshold, transition back to game phase
-        if (currentPhase.value === 'set-complete') {
-          // Determine appropriate phase to return to
-          if (selectedStage.value) {
-            currentPhase.value = 'winner-select';
-          } else if (stageBans.value.size > 0) {
-            currentPhase.value = 'selecting';
-          } else {
-            currentPhase.value = 'banning';
-          }
-        }
-      }
     }
   }
 
@@ -289,17 +268,6 @@ export const useGameStore = defineStore('game', () => {
     currentBanIndex.value = 0;
   }
 
-  function clearBans() {
-    // Clear all stage bans for the current game
-    stageBans.value.clear();
-    // Reset ban index to start over
-    currentBanIndex.value = 0;
-    // Reset to banning phase if we were in selection
-    if (currentPhase.value === 'selecting') {
-      currentPhase.value = 'banning';
-    }
-  }
-
   return {
     // State
     players,
@@ -333,30 +301,5 @@ export const useGameStore = defineStore('game', () => {
     updatePlayerScore,
     enableGentlemansAgreement,
     disableGentlemansAgreement,
-    clearBans,
   };
-}, {
-  persist: {
-    key: 'smash-stage-ban-app',
-    storage: localStorage,
-    // Custom serialization for Map objects
-    serializer: {
-      serialize: (state) => {
-        const serializedState = { ...state }
-        // Convert Map to array of entries for serialization
-        if (state.stageBans instanceof Map) {
-          serializedState.stageBans = Array.from(state.stageBans.entries())
-        }
-        return JSON.stringify(serializedState)
-      },
-      deserialize: (serializedState) => {
-        const state = JSON.parse(serializedState)
-        // Convert array of entries back to Map
-        if (Array.isArray(state.stageBans)) {
-          state.stageBans = new Map(state.stageBans)
-        }
-        return state
-      }
-    }
-  }
 });

@@ -13,15 +13,4 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 
-// Navigation guard to check game state
-router.beforeEach((to, from, next) => {
-  const gameStore = useGameStore()
-  
-  if (gameStore.currentPhase === 'set-complete' && to.name !== 'set-complete') {
-    next({ name: 'set-complete' })
-  } else {
-    next()
-  }
-})
-
 app.mount('#app')
