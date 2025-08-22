@@ -32,6 +32,7 @@
             <div v-if="isBanned(stage.id)" class="ban-indicator">
               <span class="ban-text">BANNED</span>
               <span class="ban-player">{{ getBanningPlayerName(stage.id) }}</span>
+              <span v-if="canUnbanStage(stage.id)" class="unban-hint">Click to Unban</span>
             </div>
             <div v-else-if="isSelected(stage.id)" class="selection-indicator">
               <span class="selection-text">SELECTED</span>
@@ -56,11 +57,6 @@
         <span class="ban-count">({{ remainingBans }} remaining)</span>
         
         <!-- Clear Bans Button -->
-        <div v-if="stageBans.size > 0" class="clear-bans-section">
-          <button @click="clearBans" class="clear-bans-btn" aria-label="Clear all bans">
-            Clear All Bans
-          </button>
-        </div>
       </div>
       <div v-else-if="currentPhase === 'selecting'" class="status-message">
         <div v-if="gameStore.gentlemansAgreement" class="gentlemans-status">
@@ -152,7 +148,10 @@ const canInteractWithStage = (stageId: string): boolean => {
     return true;
   }
   
-  if (isBanned(stageId)) return false;
+  // Allow interaction with banned stages to revert bans
+  if (isBanned(stageId)) {
+    return currentPhase.value === 'banning' && gameStore.currentBanPhase?.phase === 'banning';
+  }
   
   if (currentPhase.value === 'banning') {
     return gameStore.currentBanPhase?.phase === 'banning';
@@ -170,6 +169,18 @@ const isCurrentPlayerTurn = (stageId: string): boolean => {
   return currentPhase.value === 'banning' || currentPhase.value === 'selecting';
 };
 
+const canUnbanStage = (stageId: string): boolean => {
+  if (currentPhase.value !== 'banning') return false;
+  if (!isBanned(stageId)) return false;
+  
+  // Check if the current player is the one who banned this stage
+  const currentPlayerIndex = currentPlayer.value?.id;
+  if (currentPlayerIndex === undefined) return false;
+  
+  const banningPlayerIndex = stageBans.value.get(stageId);
+  return banningPlayerIndex === currentPlayerIndex;
+};
+
 const getBanningPlayerName = (stageId: string): string => {
   const playerIndex = stageBans.value.get(stageId);
   if (playerIndex !== undefined) {
@@ -181,6 +192,9 @@ const getBanningPlayerName = (stageId: string): string => {
 const getStageAriaLabel = (stage: Stage): string => {
   if (isBanned(stage.id)) {
     const playerName = getBanningPlayerName(stage.id);
+    if (canUnbanStage(stage.id)) {
+      return `${stage.name}, banned by ${playerName}, click to unban`;
+    }
     return `${stage.name}, banned by ${playerName}`;
   }
   
@@ -207,7 +221,13 @@ const handleStageClick = (stageId: string) => {
   
   try {
     if (currentPhase.value === 'banning') {
-      gameStore.banStage(stageId);
+      if (isBanned(stageId)) {
+        // Revert the ban if the stage is already banned
+        gameStore.unbanStage(stageId);
+      } else {
+        // Ban the stage if it's not banned
+        gameStore.banStage(stageId);
+      }
     } else if (currentPhase.value === 'selecting') {
       // In gentleman's agreement mode, any stage can be selected
       if (gameStore.gentlemansAgreement) {
@@ -294,7 +314,7 @@ const clearBans = () => {
 
 .stage-item.banned {
   opacity: 0.6;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .stage-item.banned-by-player-1 {
@@ -374,6 +394,15 @@ const clearBans = () => {
   display: block;
   font-size: var(--font-size-sm);
   opacity: 0.9;
+}
+
+.unban-hint {
+  display: block;
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
+  color: #ffd700;
+  font-style: italic;
+  margin-top: var(--spacing-xs);
 }
 
 .hint-text {

@@ -89,6 +89,40 @@ export class BanService {
   }
 
   /**
+   * Check if a stage can be unbanned by the current player
+   * @param gameState - Current game state
+   * @param stageId - Stage ID to check
+   * @returns True if the stage can be unbanned
+   */
+  static canUnbanStage(gameState: GameState, stageId: string): boolean {
+    // Must be in banning phase
+    if (gameState.currentPhase !== 'banning') {
+      return false;
+    }
+    
+    // Stage must be banned
+    if (!gameState.stageBans.has(stageId)) {
+      return false;
+    }
+    
+    // Must be current player's turn
+    const currentBanIndex = gameState.currentBanIndex;
+    if (currentBanIndex >= gameState.banOrder.length) {
+      return false;
+    }
+    
+    const currentPlayer = gameState.banOrder[currentBanIndex];
+    
+    // Player can only unban stages they banned themselves
+    const banningPlayer = gameState.stageBans.get(stageId);
+    if (banningPlayer === undefined || banningPlayer !== currentPlayer) {
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
    * Check if a stage can be selected
    * @param gameState - Current game state
    * @param stageId - Stage ID to check

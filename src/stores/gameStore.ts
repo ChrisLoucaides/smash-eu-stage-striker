@@ -195,6 +195,32 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  function unbanStage(stageId: string) {
+    if (!BanService.canUnbanStage({
+      players: players.value,
+      matchFormat: matchFormat.value,
+      currentGame: currentGame.value,
+      currentPhase: currentPhase.value,
+      banOrder: banOrder.value,
+      currentBanIndex: currentBanIndex.value,
+      stageBans: stageBans.value,
+      selectedStage: selectedStage.value,
+      gentlemansAgreement: gentlemansAgreement.value,
+      gameHistory: gameHistory.value,
+    }, stageId)) {
+      throw new Error(`Cannot unban stage ${stageId} at this time`);
+    }
+
+    // Remove the ban
+    stageBans.value.delete(stageId);
+    
+    // Decrement the ban index since we're "undoing" a ban
+    currentBanIndex.value--;
+    
+    // Ensure we stay in banning phase
+    currentPhase.value = 'banning';
+  }
+
   function selectStage(stageId: string) {
     if (!BanService.canSelectStage({
       players: players.value,
@@ -448,6 +474,7 @@ export const useGameStore = defineStore('game', () => {
     // Actions
     setupMatch,
     banStage,
+    unbanStage,
     selectStage,
     declareWinner,
     resetMatch,
