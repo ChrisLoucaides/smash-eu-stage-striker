@@ -337,7 +337,7 @@ const clearBans = () => {
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 70%; /* 16:9 aspect ratio */
+  padding-bottom: 80%; /* 16:9 aspect ratio */
   overflow: hidden;
 }
 
@@ -415,13 +415,29 @@ const clearBans = () => {
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+
+  background:
+      linear-gradient(transparent, rgba(0, 0, 0, 0.8)),
+      repeating-linear-gradient(
+          135deg,
+          #f0f0f0,
+          #f0f0f0 10px,
+          #e0e0e0 10px,
+          #e0e0e0 20px
+      );
+
   color: white;
-  padding: 20px var(--spacing-md); /* Reduced top/bottom padding from var(--spacing-sm) to var(--spacing-xs) */
-  font-size: 0.85em;
+  padding: 10px var(--spacing-md);
+  font-size: 0.75em;
   font-weight: 600;
   text-align: center;
+  text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px  1px 0 #000,
+      1px  1px 0 #000;
 }
+
 
 .game-status {
   text-align: center;
@@ -523,7 +539,8 @@ const clearBans = () => {
   }
   
   .stage-name {
-    font-size: var(--font-size-sm);
+
+    font-size: 7px;
     padding: var(--spacing-xs) var(--spacing-sm);
   }
   
@@ -552,7 +569,6 @@ const clearBans = () => {
   }
   
   .stage-name {
-    font-size: var(--font-size-sm);
     padding: var(--spacing-xs);
   }
   
