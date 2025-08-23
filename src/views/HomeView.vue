@@ -6,10 +6,10 @@
       <ul>
         <li>3 Stocks</li>
         <li>7 Minutes</li>
-        <li>Characters First</li>
-        <li>RPS to ban 1st</li>
+        <li>Characters first</li>
+        <li>RPS to ban first</li>
         <li>Game 1: 3-4-1 Bans</li>
-        <li>Game 2+: Winner Bans 3, loser picks</li>
+        <li>Game 2+: Winner bans 3, loser picks</li>
       </ul>
       <button @click="openSetupModal" class="setup-button">
         Player/Match Setup
