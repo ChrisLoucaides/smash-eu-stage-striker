@@ -33,19 +33,9 @@ function toggleGentlemansAgreement(event: Event) {
   const isChecked = (event.target as HTMLInputElement).checked
   
   if (isChecked) {
-    if (confirm('Enable Gentleman\'s Agreement? This will clear all current bans and allow direct stage selection.')) {
-      gameStore.enableGentlemansAgreement()
-    } else {
-      // Reset checkbox if user cancels
-      (event.target as HTMLInputElement).checked = false
-    }
+    gameStore.enableGentlemansAgreement()
   } else {
-    if (confirm('Disable Gentleman\'s Agreement? This will restart the ban phase.')) {
-      gameStore.disableGentlemansAgreement()
-    } else {
-      // Reset checkbox if user cancels
-      (event.target as HTMLInputElement).checked = true
-    }
+    gameStore.disableGentlemansAgreement()
   }
 }
 </script>

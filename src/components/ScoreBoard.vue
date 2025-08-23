@@ -75,10 +75,7 @@ function decreaseScore(playerIndex: number) {
   if (isMatchComplete.value) return;
   
   if (players.value[playerIndex].score > 0) {
-    // Create a confirmation dialog for score changes
-    if (confirm(`Decrease ${players.value[playerIndex].name}'s score?`)) {
-      gameStore.updatePlayerScore(playerIndex, players.value[playerIndex].score - 1)
-    }
+    gameStore.updatePlayerScore(playerIndex, players.value[playerIndex].score - 1)
   }
 }
 
@@ -87,10 +84,7 @@ function increaseScore(playerIndex: number) {
   
   const maxScore = gameStore.matchFormat === 'BO3' ? 2 : 3
   if (players.value[playerIndex].score < maxScore) {
-    // Create a confirmation dialog for score changes
-    if (confirm(`Increase ${players.value[playerIndex].name}'s score?`)) {
-      gameStore.updatePlayerScore(playerIndex, players.value[playerIndex].score + 1)
-    }
+    gameStore.updatePlayerScore(playerIndex, players.value[playerIndex].score + 1)
   }
 }
 
