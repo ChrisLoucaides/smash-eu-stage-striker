@@ -406,6 +406,7 @@ function submitForm() {
   
   .input {
     padding: var(--spacing-sm);
+    margin-left: -0.55em;
   }
   
   .button {

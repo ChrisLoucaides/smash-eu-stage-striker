@@ -6,10 +6,10 @@
       <ul>
         <li>3 Stocks</li>
         <li>7 Minutes</li>
-        <li>Declare Characters First, ask for double blind if needed</li>
-        <li>Rock Paper Scissors (RPS) to determine who bans first</li>
-        <li>Game 1 only: Winner bans 3, Loser bans 4, Winner picks</li>
-        <li>Game 2+: Winner bans 3, Loser picks</li>
+        <li>Characters First</li>
+        <li>RPS to ban 1st</li>
+        <li>Game 1: 3-4-1 Bans</li>
+        <li>Game 2+: Winner Bans 3, loser picks</li>
       </ul>
       <button @click="openSetupModal" class="setup-button">
         Player/Match Setup
