@@ -1,107 +1,143 @@
 <template>
-  <div class="modal" :class="{ 'is-active': isOpen }">
-    <div class="modal-background" @click="closeModal"></div>
-    <div class="modal-content">
-      <div class="box">
-        <h2 class="title">Match Setup</h2>
-        <form @submit.prevent="submitForm">
-          <div class="field">
-            <label class="label">Player 1 Name</label>
-            <div class="control">
-              <input 
-                class="input" 
-                type="text" 
-                v-model="player1Name" 
-                required
-                maxlength="20"
-                @input="validatePlayerNames"
-                placeholder="Enter Player 1 name"
-              >
+  <Transition name="modal">
+    <div class="modal" :class="{ 'is-active': isOpen }">
+      <div class="modal-background" @click="closeModal"></div>
+      <div class="modal-content">
+        <div class="modal-box glass-card">
+          <div class="modal-header">
+            <h2 class="modal-title">Match Setup</h2>
+            <div class="setup-icon">⚔️</div>
+          </div>
+          
+          <form @submit.prevent="submitForm" class="setup-form">
+            <div class="form-section">
+              <h3 class="section-title">Player Information</h3>
+              <div class="player-fields">
+                <div class="field">
+                  <label class="label">
+                    <span class="label-icon">👤</span>
+                    Player 1 Name
+                  </label>
+                  <div class="control">
+                    <input 
+                      class="input" 
+                      type="text" 
+                      v-model="player1Name" 
+                      required
+                      maxlength="20"
+                      @input="validatePlayerNames"
+                      placeholder="Enter Player 1 name"
+                    >
+                  </div>
+                  <p v-if="nameError" class="help is-danger">{{ nameError }}</p>
+                </div>
+                
+                <div class="field">
+                  <label class="label">
+                    <span class="label-icon">👤</span>
+                    Player 2 Name
+                  </label>
+                  <div class="control">
+                    <input 
+                      class="input" 
+                      type="text" 
+                      v-model="player2Name" 
+                      required
+                      maxlength="20"
+                      @input="validatePlayerNames"
+                      placeholder="Enter Player 2 name"
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
-            <p v-if="nameError" class="help is-danger">{{ nameError }}</p>
-          </div>
-          
-          <div class="field">
-            <label class="label">Player 2 Name</label>
-            <div class="control">
-              <input 
-                class="input" 
-                type="text" 
-                v-model="player2Name" 
-                required
-                maxlength="20"
-                @input="validatePlayerNames"
-                placeholder="Enter Player 2 name"
-              >
+            
+            <div class="form-section">
+              <h3 class="section-title">Match Configuration</h3>
+              <div class="config-fields">
+                <div class="field">
+                  <label class="label">
+                    <span class="label-icon">🏆</span>
+                    Match Format
+                  </label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" v-model="matchFormat" value="BO3">
+                      <span class="radio-custom"></span>
+                      <span class="radio-text">Best of 3</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" v-model="matchFormat" value="BO5">
+                      <span class="radio-custom"></span>
+                      <span class="radio-text">Best of 5</span>
+                    </label>
+                  </div>
+                </div>
+                
+                <div class="field">
+                  <label class="label">
+                    <span class="label-icon">✂️</span>
+                    First Ban
+                  </label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" v-model="firstBan" :value="0">
+                      <span class="radio-custom"></span>
+                      <span class="radio-text">{{ player1Name || 'Player 1' }}</span>
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" v-model="firstBan" :value="1">
+                      <span class="radio-custom"></span>
+                      <span class="radio-text">{{ player2Name || 'Player 2' }}</span>
+                    </label>
+                  </div>
+                  <p class="help">The first player to ban stages in Game 1</p>
+                </div>
+                
+                <div class="field">
+                  <label class="checkbox-label">
+                    <input 
+                      type="checkbox" 
+                      v-model="gentlemansAgreement"
+                      class="checkbox"
+                    >
+                    <span class="checkbox-custom"></span>
+                    <span class="checkbox-text">
+                      <span class="label-icon">🤝</span>
+                      Gentleman's Agreement
+                    </span>
+                  </label>
+                  <p class="help">Skip the ban phase and allow direct stage selection by mutual agreement</p>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div class="field">
-            <label class="label">Match Format</label>
-            <div class="control">
-              <label class="radio">
-                <input type="radio" v-model="matchFormat" value="BO3">
-                Best of 3
-              </label>
-              <label class="radio">
-                <input type="radio" v-model="matchFormat" value="BO5">
-                Best of 5
-              </label>
-            </div>
-          </div>
-          
-          <div class="field">
-            <label class="label">First Ban</label>
-            <div class="control">
-              <label class="radio">
-                <input type="radio" v-model="firstBan" :value="0">
-                {{ player1Name || 'Player 1' }}
-              </label>
-              <label class="radio">
-                <input type="radio" v-model="firstBan" :value="1">
-                {{ player2Name || 'Player 2' }}
-              </label>
-            </div>
-            <p class="help">The first player to ban stages in Game 1</p>
-          </div>
-          
-          <div class="field">
-            <label class="label">
-              <input 
-                type="checkbox" 
-                v-model="gentlemansAgreement"
-                class="checkbox"
-              >
-              Gentleman's Agreement
-            </label>
-            <p class="help">Skip the ban phase and allow direct stage selection by mutual agreement</p>
-          </div>
-          
-          <div class="field is-grouped">
-            <div class="control">
+            
+            <div class="form-actions">
               <button 
-                class="button is-primary" 
+                class="action-button primary-button" 
                 type="submit"
                 :disabled="!isFormValid"
               >
+                <span class="button-icon">🚀</span>
                 Start Match
               </button>
-            </div>
-            <div class="control">
               <button 
                 type="button" 
-                class="button is-light" 
+                class="action-button secondary-button" 
                 @click="closeModal"
               >
+                <span class="button-icon">❌</span>
                 Cancel
               </button>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
+      <button class="modal-close" @click="closeModal">
+        <span class="close-icon">×</span>
+      </button>
     </div>
-    <button class="modal-close is-large" @click="closeModal"></button>
-  </div>
+  </Transition>
 </template>
 
 <script setup lang="ts">
@@ -194,12 +230,12 @@ function submitForm() {
   width: 100%;
   height: 100%;
   z-index: 1000;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal.is-active {
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .modal-background {
@@ -208,14 +244,15 @@ function submitForm() {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
   cursor: pointer;
 }
 
 .modal-content {
   position: relative;
   width: 95%;
-  max-width: 500px;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
   z-index: 1001;
@@ -223,30 +260,112 @@ function submitForm() {
   padding: var(--spacing-md);
 }
 
-.box {
-  background: white;
-  border-radius: var(--border-radius);
-  padding: var(--spacing-xl);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+.modal-box {
+  padding: var(--spacing-2xl);
+  position: relative;
+  overflow: hidden;
 }
 
-.title {
+.modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-success) 50%, var(--color-warning) 100%);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.modal-header {
   text-align: center;
+  margin-bottom: var(--spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.modal-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
   color: var(--color-dark);
-  margin-bottom: var(--spacing-lg);
-  font-size: var(--font-size-xl);
+  margin: 0;
+  background: linear-gradient(135deg, var(--color-light) 0%, var(--color-light-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.setup-icon {
+  font-size: 3rem;
+  animation: bounce-in 0.6s ease-out 0.2s both;
+}
+
+.setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.form-section {
+  background: rgba(255, 255, 255, 0.8);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: slide-in-up 0.6s ease-out 0.3s both;
+}
+
+.form-section:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-dark);
+  margin: 0 0 var(--spacing-lg) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  border-radius: 2px;
+}
+
+.player-fields,
+.config-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
 }
 
 .field {
   margin-bottom: var(--spacing-lg);
 }
 
+.field:last-child {
+  margin-bottom: 0;
+}
+
 .label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
   font-weight: 600;
   color: var(--color-dark);
   margin-bottom: var(--spacing-sm);
   font-size: var(--font-size-md);
+}
+
+.label-icon {
+  font-size: 1.2em;
 }
 
 .control {
@@ -254,123 +373,301 @@ function submitForm() {
 }
 
 .input {
-  background-color: #d8dbe0;
+  background: rgba(255, 255, 255, 0.9);
   text-align: center;
-  font-weight: bold;
-  color: #1a1a1a;
+  font-weight: 600;
+  color: var(--color-dark);
   width: 100%;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  border: 2px solid #030303;
-  border-radius: 30px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-lg);
   font-size: var(--font-size-md);
-  transition: border-color 0.2s ease;
+  transition: all var(--transition-normal);
+  box-sizing: border-box;
 }
 
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(50, 115, 220, 0.1);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  transform: translateY(-2px);
 }
 
-.radio {
-  display: block;
-  color: #1a1a1a;
-  margin-bottom: var(--spacing-sm);
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
   cursor: pointer;
-  font-size: var(--font-size-md);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-normal);
 }
 
-.radio input[type="radio"] {
-  margin-right: var(--spacing-sm);
+.radio-option:hover {
+  background: rgba(79, 70, 229, 0.05);
+}
+
+.radio-option input[type="radio"] {
+  display: none;
+}
+
+.radio-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.radio-option input[type="radio"]:checked + .radio-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: var(--color-primary);
+  border-radius: 50%;
+}
+
+.radio-text {
+  font-weight: 500;
+  color: var(--color-dark);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-normal);
+}
+
+.checkbox-label:hover {
+  background: rgba(79, 70, 229, 0.05);
 }
 
 .checkbox {
-  margin-right: var(--spacing-sm);
+  display: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-primary);
+  border-radius: 4px;
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.checkbox:checked + .checkbox-custom::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.checkbox-text {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 500;
+  color: var(--color-dark);
 }
 
 .help {
   font-size: var(--font-size-sm);
-  color: #666;
+  color: var(--color-dark-secondary);
   margin-top: var(--spacing-xs);
+  font-style: italic;
 }
 
 .help.is-danger {
   color: var(--color-danger);
+  font-weight: 500;
 }
 
-.field.is-grouped {
+.form-actions {
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-lg);
   justify-content: center;
+  flex-wrap: wrap;
   margin-top: var(--spacing-xl);
 }
 
-.button {
-  padding: var(--spacing-md) var(--spacing-lg);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-md);
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-size: var(--font-size-lg);
   font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius-lg);
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 100px;
+  transition: all var(--transition-normal);
+  min-width: 160px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.button.is-primary {
-  background-color: var(--color-primary);
+.action-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.action-button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, var(--color-success) 0%, var(--color-success-light) 100%);
   color: white;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
 }
 
-.button.is-primary:hover:not(:disabled) {
-  background-color: #2366d1;
-  transform: translateY(-1px);
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
 }
 
-.button.is-primary:disabled {
-  background-color: #ccc;
+.primary-button:disabled {
+  background: var(--color-light-secondary);
+  color: var(--color-dark-secondary);
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
-.button.is-light {
-  background-color: var(--color-light);
+.secondary-button {
+  background: linear-gradient(135deg, var(--color-light-secondary) 0%, var(--color-light) 100%);
   color: var(--color-dark);
-  border: 1px solid #ddd;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.button.is-light:hover {
-  background-color: #e8e8e8;
+.secondary-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.button-icon {
+  font-size: 1.2em;
 }
 
 .modal-close {
+  z-index: 999;
   position: absolute;
-  top: var(--spacing-md);
-  right: var(--spacing-md);
-  background: none;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-danger) 0%, var(--color-danger-light) 100%);
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: #666;
-  width: 2rem;
-  height: 2rem;
+  color: white;
+  width: 3rem;
+  height: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+  animation: bounce-in 0.6s ease-out 0.5s both;
+}
+
+.close-icon {
+  margin-bottom: 0.2em;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .modal-close:hover {
-  background-color: var(--color-light);
-  color: var(--color-dark);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+}
+
+/* Modal Transition Animations */
+.modal-enter-active,
+.modal-leave-active {
+  transition: all var(--transition-slow);
+}
+
+.modal-enter-from {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design */
+@media (max-width: 850px) {
+  .modal-close {
+    display: none
+  }
+}
+
 @media (min-width: 768px) {
   .modal-content {
     width: 80%;
-    max-width: 500px;
+    max-width: 600px;
   }
 }
 
@@ -380,74 +677,82 @@ function submitForm() {
     margin: var(--spacing-md);
   }
   
-  .box {
-    padding: var(--spacing-lg);
+  .modal-box {
+    padding: var(--spacing-xl);
   }
   
-  .field.is-grouped {
+  .form-actions {
     flex-direction: column;
     align-items: center;
   }
   
-  .button {
+  .action-button {
     width: 100%;
-    max-width: 200px;
+    max-width: 250px;
+  }
+  
+  .player-fields,
+  .config-fields {
+    gap: var(--spacing-md);
   }
 }
 
 @media (max-width: 480px) {
-  .box {
-    padding: var(--spacing-md);
+  .modal-box {
+    padding: var(--spacing-lg);
   }
   
-  .title {
-    font-size: var(--font-size-lg);
+  .modal-title {
+    font-size: var(--font-size-xl);
+  }
+  
+  .form-section {
+    padding: var(--spacing-lg);
   }
   
   .input {
-    padding: var(--spacing-sm);
-    margin-left: -0.55em;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
   
-  .button {
-    padding: var(--spacing-sm) var(--spacing-md);
+  .action-button {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .modal-close {
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .close-icon {
+    font-size: 1.25rem;
   }
 }
 
 /* Focus styles for accessibility */
 .input:focus,
-.radio input:focus,
-.checkbox:focus,
-.button:focus {
-  outline: 3px solid var(--color-primary);
+.radio-option input:focus + .radio-custom,
+.checkbox:focus + .checkbox-custom,
+.action-button:focus-visible,
+.modal-close:focus-visible {
+  outline: 3px solid var(--color-info);
   outline-offset: 2px;
-}
-
-/* Animation for modal appearance */
-.modal.is-active .modal-content {
-  animation: modal-slide-in 0.3s ease-out;
-}
-
-@keyframes modal-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
 }
 
 /* Touch device optimizations */
 @media (hover: none) {
-  .button:active {
+  .action-button:active {
     transform: scale(0.98);
   }
   
   .modal-close:active {
-    background-color: var(--color-light);
-    color: var(--color-dark);
+    transform: scale(0.95);
+  }
+  
+  .radio-option:active,
+  .checkbox-label:active {
+    background: rgba(79, 70, 229, 0.1);
   }
 }
 </style>

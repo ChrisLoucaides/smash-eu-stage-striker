@@ -1,72 +1,127 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import SessionRecoveryNotification from './components/SessionRecoveryNotification.vue'
+
+const route = useRoute()
+
+const getTransitionName = (routeName: string): string => {
+  switch (routeName) {
+    case 'home':
+      return 'page'
+    case 'game':
+      return 'slide'
+    case 'set-complete':
+      return 'fade'
+    default:
+      return 'fade'
+  }
+}
 </script>
 
 <template>
-  <div class="app">
-    <header class="app-header">
-      <h1>SmashEU Ruleset Stage Striker (Beta)</h1>
-      <p>Tournament Stage Ban Tool - made by Afro</p>
-    </header>
+  <div id="app">
+    <!-- Dust Particles Background -->
+    <div class="dust-particles">
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+      <div class="dust-particle"></div>
+    </div>
     
     <SessionRecoveryNotification />
-    <RouterView />
+    
+    <RouterView v-slot="{ Component, route }">
+      <Transition 
+        :name="getTransitionName(route.name as string)"
+        mode="out-in"
+      >
+        <component :is="Component" :key="route.path" />
+      </Transition>
+    </RouterView>
   </div>
 </template>
 
-<style scoped>
-.app {
-  min-height: 100vh;
-  /*background: linear-gradient(135deg, #ffffff 0%, #c7dcfa 100%);*/
-  padding: var(--spacing-lg);
-}
-
-.app-header {
+<style>
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
-  color: white;
+  width: 100%;
 }
 
-.app-header h1 {
-  font-size: var(--font-size-xl);
-  color: #1a1a1a;
-  margin: 0 0 var(--spacing-sm) 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+/* Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all var(--transition-slow);
 }
 
-.app-header p {
-  font-size: var(--font-size-lg);
-  color: #1a1a1a;
-  margin: 0;
-  opacity: 0.9;
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all var(--transition-normal);
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--transition-normal);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .app {
+  #app {
     padding: var(--spacing-md);
-  }
-  
-  .app-header h1 {
-    font-size: var(--font-size-lg);
-  }
-  
-  .app-header p {
-    font-size: var(--font-size-md);
   }
 }
 
 @media (max-width: 480px) {
-  .app {
+  #app {
     padding: var(--spacing-sm);
-  }
-  
-  .app-header h1 {
-    font-size: var(--font-size-md);
-  }
-  
-  .app-header p {
-    font-size: var(--font-size-sm);
   }
 }
 </style>
