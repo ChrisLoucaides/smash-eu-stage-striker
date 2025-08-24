@@ -128,6 +128,8 @@ function handleImageError(event: Event) {
   position: relative;
   z-index: 1001;
   width: 90%;
+  max-height: 100vh;
+  overflow-y: auto;
   max-width: 600px;
   margin: 0 auto;
   padding: var(--spacing-md);
@@ -136,7 +138,7 @@ function handleImageError(event: Event) {
 .modal-box {
   padding: var(--spacing-2xl);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .modal-box::before {
