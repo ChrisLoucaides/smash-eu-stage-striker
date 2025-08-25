@@ -2,7 +2,7 @@
   <div class="home-view">
     <div class="hero-section">
       <div class="hero-content">
-        <h1 class="hero-title">EU Ruleset Ban App</h1>
+        <h1 class="hero-title">EU Ruleset Ban App (Beta)</h1>
         <p class="hero-subtitle">Ban stage selection for Super Smash Bros. Ultimate by <a href="https://x.com/ChrisLoucaides" target="_blank">Afro</a></p>
       </div>
     </div>
