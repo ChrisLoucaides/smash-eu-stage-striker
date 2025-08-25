@@ -189,8 +189,7 @@ const closeSetupModal = () => {
   margin-bottom: var(--spacing-2xl);
   box-sizing: border-box;
   width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
+  max-width: 280vh;
 }
 
 .rule-card {
