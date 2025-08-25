@@ -184,11 +184,10 @@ const closeSetupModal = () => {
 /* Rules Grid */
 .rules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
   box-sizing: border-box;
-  max-width: 300em;
 }
 
 .rule-card {
