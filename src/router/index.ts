@@ -25,6 +25,7 @@ const router = createRouter({
 })
 
 // Navigation guard to check game state
+// @ts-ignore
 router.beforeEach((to, from, next) => {
   // Import the store inside the guard to ensure it's initialized
   import('../stores/gameStore').then(({ useGameStore }) => {

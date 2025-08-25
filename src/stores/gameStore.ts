@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, watch } from 'vue';
 import type { Player, MatchFormat, GamePhase, MatchSetup, GameResult } from '../types';
 import { BanService } from '../services/BanService';
 import { StageService } from '../services/StageService';

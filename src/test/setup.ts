@@ -8,6 +8,7 @@ const localStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
 }
+// @ts-ignore
 global.localStorage = localStorageMock
 
 // Mock window.matchMedia for responsive design tests
