@@ -3,7 +3,7 @@
     <div class="hero-section">
       <div class="hero-content">
         <h1 class="hero-title">EU Ruleset Ban App</h1>
-        <p class="hero-subtitle">Ban stage selection for Super Smash Bros. Ultimate by Afro</p>
+        <p class="hero-subtitle">Ban stage selection for Super Smash Bros. Ultimate by <a href="https://x.com/ChrisLoucaides" target="_blank">Afro</a></p>
       </div>
     </div>
 
@@ -124,6 +124,11 @@ const closeSetupModal = () => {
   margin-bottom: -1em;
   opacity: 0.9;
   font-weight: 400;
+}
+
+.hero-subtitle a {
+  color: var(--color-light);
+  text-decoration: underline;
 }
 
 /* Setup Section */
