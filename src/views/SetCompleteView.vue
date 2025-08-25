@@ -12,7 +12,7 @@
       <div class="match-summary">
         <h3>Match Summary</h3>
         <div class="match-format">{{ matchFormat }}</div>
-        <div class="games-played">Games Played: {{ currentGame - 1 }}</div>
+        <div class="games-played">Games Played: {{ gameHistory.length }}</div>
       </div>
       
       <div class="actions">
@@ -34,6 +34,7 @@ const router = useRouter()
 const players = computed(() => gameStore.players)
 const currentGame = computed(() => gameStore.currentGame)
 const matchFormat = computed(() => gameStore.matchFormat === 'BO3' ? 'Best of 3' : 'Best of 5')
+const gameHistory = computed(() => gameStore.gameHistory)
 
 const winnerIndex = computed(() => {
   if (players.value[0].score > players.value[1].score) return 0
