@@ -51,7 +51,7 @@
           <span class="button-icon">🎯</span>
           Start Match Setup
         </button>
-        <a href="https://www.ssbwiki.com/Tournament_rulesets_(SSBU)" target="_blank">
+        <a href="https://www.ssbwiki.com/Tournament_rulesets_(SSBU)#Unified_European_Ruleset" target="_blank">
           <button class="rules-button secondary-button">
             <span class="button-icon">📖</span>
             View Full Rules
