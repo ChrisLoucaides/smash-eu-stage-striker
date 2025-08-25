@@ -272,6 +272,7 @@ watch(() => gameStore.isSetComplete, (isComplete) => {
 .control-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-lg) var(--spacing-xl);
   font-size: var(--font-size-md);

@@ -45,7 +45,6 @@ const getTransitionName = (routeName: string): string => {
       <div class="dust-particle"></div>
       <div class="dust-particle"></div>
       <div class="dust-particle"></div>
-      <div class="dust-particle"></div>
     </div>
     
     <SessionRecoveryNotification />
@@ -68,6 +67,9 @@ const getTransitionName = (routeName: string): string => {
   padding: 2rem;
   text-align: center;
   width: 100%;
+  overflow-x: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 /* Page Transitions */
@@ -115,12 +117,16 @@ const getTransitionName = (routeName: string): string => {
 @media (max-width: 768px) {
   #app {
     padding: var(--spacing-md);
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 }
 
 @media (max-width: 480px) {
   #app {
     padding: var(--spacing-sm);
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 }
 </style>

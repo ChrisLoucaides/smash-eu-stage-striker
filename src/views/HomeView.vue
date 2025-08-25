@@ -92,6 +92,10 @@ const closeSetupModal = () => {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2xl);
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 /* Hero Section */
@@ -116,6 +120,7 @@ const closeSetupModal = () => {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 1em;
 }
 
 .hero-subtitle {
@@ -135,6 +140,10 @@ const closeSetupModal = () => {
 .setup-section {
   padding: var(--spacing-2xl);
   animation: slide-in-up 0.8s ease-out 0.2s both;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .section-header {
@@ -178,6 +187,10 @@ const closeSetupModal = () => {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .rule-card {
@@ -188,6 +201,9 @@ const closeSetupModal = () => {
   transition: all var(--transition-normal);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
 .rule-card:hover {
@@ -240,6 +256,9 @@ const closeSetupModal = () => {
   justify-content: center;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
 .setup-button {
@@ -325,20 +344,26 @@ const closeSetupModal = () => {
   .home-view {
     padding: var(--spacing-md);
     gap: var(--spacing-xl);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    width: 100%;
+    max-width: 100vw;
   }
 
   .setup-section {
     padding: var(--spacing-xl);
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
 
   .rules-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--spacing-md);
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
 
   .setup-actions {
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
 
   .setup-button,
@@ -349,17 +374,27 @@ const closeSetupModal = () => {
 }
 
 @media (max-width: 480px) {
+  .home-view {
+    padding: var(--spacing-lg);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    width: 100%;
+    max-width: 100vw;
+  }
+
   .hero-section {
     padding: var(--spacing-xl) 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
 
   .setup-section {
     padding: var(--spacing-lg);
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
 
   .rules-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
+    overflow-x: hidden; /* Prevent horizontal scroll */
   }
 
   .rule-card {
