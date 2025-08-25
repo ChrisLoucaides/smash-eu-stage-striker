@@ -4,7 +4,7 @@ import GameView from '../views/GameView.vue'
 import SetCompleteView from '../views/SetCompleteView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL || '/smash-eu-stage-striker/'),
   routes: [
     {
       path: '/',
