@@ -1,59 +1,64 @@
 import type { Stage } from '../types';
 
+const getAssetPath = (path: string): string => {
+  const baseUrl = import.meta.env.BASE_URL || '/smash-eu-stage-striker/';
+  return `${baseUrl}assets/stages/${path}`;
+};
+
 // All 9 legal stages for competitive Smash Bros. Ultimate
 export const LEGAL_STAGES: Stage[] = [
   {
     id: 'battlefield',
     name: 'Battlefield',
-    imageUrl: '/assets/stages/battlefield.png',
+    imageUrl: getAssetPath('battlefield.png'),
     isLegal: true,
   },
   {
     id: 'final-destination',
     name: 'Final Destination',
-    imageUrl: '/assets/stages/final-destination.png',
+    imageUrl: getAssetPath('final-destination.png'),
     isLegal: true,
   },
   {
     id: 'small-battlefield',
     name: 'Small Battlefield',
-    imageUrl: '/assets/stages/small-battlefield.png',
+    imageUrl: getAssetPath('small-battlefield.png'),
     isLegal: true,
   },
   {
     id: 'pokemon-stadium-2',
     name: 'Pokémon Stadium 2',
-    imageUrl: '/assets/stages/pokemon-stadium-2.png',
+    imageUrl: getAssetPath('pokemon-stadium-2.png'),
     isLegal: true,
   },
   {
     id: 'smashville',
     name: 'Smashville',
-    imageUrl: '/assets/stages/smashville.png',
+    imageUrl: getAssetPath('smashville.png'),
     isLegal: true,
   },
   {
     id: 'town-and-city',
     name: 'Town and City',
-    imageUrl: '/assets/stages/town-and-city.png',
+    imageUrl: getAssetPath('town-and-city.png'),
     isLegal: true,
   },
   {
     id: 'kalos-pokemon-league',
     name: 'Kalos Pokémon League',
-    imageUrl: '/assets/stages/kalos-pokemon-league.png',
+    imageUrl: getAssetPath('kalos-pokemon-league.png'),
     isLegal: true,
   },
   {
     id: 'hollow-bastion',
     name: 'Hollow Bastion',
-    imageUrl: '/assets/stages/hollow-bastion.png',
+    imageUrl: getAssetPath('hollow-bastion.png'),
     isLegal: true,
   },
   {
     id: 'yoshis-story',
     name: 'Yoshi\'s Story',
-    imageUrl: '/assets/stages/yoshis-story.png',
+    imageUrl: getAssetPath('yoshis-story.png'),
     isLegal: true,
   },
 ];
