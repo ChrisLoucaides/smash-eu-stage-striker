@@ -26,6 +26,9 @@
                       required
                       maxlength="20"
                       @input="validatePlayerNames"
+                      @focus="clearOnFocus"
+                      @blur="restoreDefaultOnBlur"
+                      data-player="1"
                       placeholder="Enter Player 1 name"
                     >
                   </div>
@@ -45,6 +48,9 @@
                       required
                       maxlength="20"
                       @input="validatePlayerNames"
+                      @focus="clearOnFocus"
+                      @blur="restoreDefaultOnBlur"
+                      data-player="2"
                       placeholder="Enter Player 2 name"
                     >
                   </div>
@@ -191,6 +197,30 @@ function validatePlayerNames() {
     nameError.value = 'Player names must be different'
   } else {
     nameError.value = ''
+  }
+}
+
+function clearOnFocus(event: Event) {
+  const input = event.target as HTMLInputElement
+  const playerNum = input.dataset.player
+  
+  // Only clear if the current value is the default
+  if (playerNum === '1' && player1Name.value === 'Player 1') {
+    player1Name.value = ''
+  } else if (playerNum === '2' && player2Name.value === 'Player 2') {
+    player2Name.value = ''
+  }
+}
+
+function restoreDefaultOnBlur(event: Event) {
+  const input = event.target as HTMLInputElement
+  const playerNum = input.dataset.player
+  
+  // Restore default if field is empty
+  if (playerNum === '1' && player1Name.value.trim() === '') {
+    player1Name.value = 'Player 1'
+  } else if (playerNum === '2' && player2Name.value.trim() === '') {
+    player2Name.value = 'Player 2'
   }
 }
 
