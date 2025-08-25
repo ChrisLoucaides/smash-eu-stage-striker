@@ -32,7 +32,6 @@ const gameStore = useGameStore()
 const router = useRouter()
 
 const players = computed(() => gameStore.players)
-const currentGame = computed(() => gameStore.currentGame)
 const matchFormat = computed(() => gameStore.matchFormat === 'BO3' ? 'Best of 3' : 'Best of 5')
 const gameHistory = computed(() => gameStore.gameHistory)
 
