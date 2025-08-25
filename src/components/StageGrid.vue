@@ -268,11 +268,6 @@ const handleImageError = (event: Event) => {
   }
 };
 
-const clearBans = () => {
-  if (confirm('Are you sure you want to clear all bans for this game? This will reset the ban phase.')) {
-    gameStore.clearBans();
-  }
-};
 </script>
 
 <style scoped>

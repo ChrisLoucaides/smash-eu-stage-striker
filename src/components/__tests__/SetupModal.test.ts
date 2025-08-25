@@ -1,9 +1,10 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import SetupModal from '../SetupModal.vue'
 
 describe('SetupModal', () => {
+  // @ts-ignore
   beforeEach(() => {
     setActivePinia(createPinia())
   })

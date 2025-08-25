@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView } from 'vue-router'
 import SessionRecoveryNotification from './components/SessionRecoveryNotification.vue'
 
-const route = useRoute()
 
 const getTransitionName = (routeName: string): string => {
   switch (routeName) {
