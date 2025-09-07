@@ -32,6 +32,16 @@
               <div class="selection-icon">🏆</div>
               <h3 class="modal-title">Select Winner</h3>
             </div>
+            <div class="undo-section">
+              <button 
+                class="undo-button"
+                @click="handleUndoStageSelection"
+                title="Undo stage selection"
+              >
+                <span class="undo-icon">↶</span>
+                <span class="undo-text">Undo Stage Select</span>
+              </button>
+            </div>
             <div class="player-buttons">
               <button 
                 class="player-button player-1-button" 
@@ -97,6 +107,16 @@ function handleImageError(event: Event) {
   const img = event.target as HTMLImageElement
   // Fallback to a placeholder or hide the image if it fails to load
   img.style.display = 'none'
+}
+
+function handleUndoStageSelection() {
+  try {
+    gameStore.undoStageSelection()
+    closeModal()
+  } catch (error) {
+    console.error('Error undoing stage selection:', error)
+    // You could add a toast notification here for user feedback
+  }
 }
 </script>
 
@@ -279,6 +299,44 @@ function handleImageError(event: Event) {
   margin: 0;
   font-size: var(--font-size-xl);
   color: var(--color-dark);
+  font-weight: 600;
+}
+
+.undo-section {
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+}
+
+.undo-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-light) 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+  animation: slide-in-up 0.6s ease-out 0.4s both;
+}
+
+.undo-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+}
+
+.undo-icon {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.undo-text {
+  font-size: var(--font-size-sm);
   font-weight: 600;
 }
 
@@ -475,6 +533,19 @@ function handleImageError(event: Event) {
     max-height: 200px;
   }
   
+  .undo-button {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+  
+  .undo-icon {
+    font-size: var(--font-size-md);
+  }
+  
+  .undo-text {
+    font-size: var(--font-size-xs);
+  }
+  
   .modal-close {
     top: var(--spacing-md);
     right: var(--spacing-md);
@@ -516,11 +587,25 @@ function handleImageError(event: Event) {
   .stage-image {
     max-height: 180px;
   }
+  
+  .undo-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+  
+  .undo-icon {
+    font-size: var(--font-size-sm);
+  }
+  
+  .undo-text {
+    font-size: var(--font-size-xs);
+  }
 }
 
 /* Focus styles for accessibility */
 .player-button:focus-visible,
-.modal-close:focus-visible {
+.modal-close:focus-visible,
+.undo-button:focus-visible {
   outline: 3px solid var(--color-info);
   outline-offset: 2px;
 }

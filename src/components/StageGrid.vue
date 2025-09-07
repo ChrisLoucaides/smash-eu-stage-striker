@@ -82,6 +82,28 @@
           </div>
         </div>
       </div>
+      <div v-else-if="currentPhase === 'winner-select'" class="status-message">
+        <div class="status-header">
+          <div class="status-content">
+            <span class="player-name" :class="{ 'player-1': isLoserPlayer1, 'player-2': !isLoserPlayer1 }">
+              {{ loserName }}
+            </span>
+            <span class="status-text"> selected a stage</span>
+            <div class="status-icon selecting-icon">✅</div>
+          </div>
+        </div>
+        <div class="undo-section">
+          <button 
+            class="undo-button"
+            @click="handleUndoStageSelection"
+            :disabled="!canUndoStageSelection"
+            title="Undo stage selection"
+          >
+            <span class="undo-icon">↶</span>
+            <span class="undo-text">Undo Stage Select</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -137,6 +159,10 @@ const isLoserPlayer1 = computed(() => {
     const winner = gameStore.players[0].score > gameStore.players[1].score ? 0 : 1;
     return winner !== 0;
   }
+});
+
+const canUndoStageSelection = computed(() => {
+  return currentPhase.value === 'winner-select' && selectedStage.value !== null;
 });
 
 // Stage state checks
@@ -265,6 +291,15 @@ const handleImageError = (event: Event) => {
   const container = img.parentElement;
   if (container) {
     container.classList.add('image-error');
+  }
+};
+
+const handleUndoStageSelection = () => {
+  try {
+    gameStore.undoStageSelection();
+  } catch (error) {
+    console.error('Error undoing stage selection:', error);
+    // You could add a toast notification here for user feedback
   }
 };
 
@@ -569,6 +604,50 @@ const handleImageError = (event: Event) => {
   font-size: var(--font-size-md);
 }
 
+.undo-section {
+  margin-top: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+}
+
+.undo-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-light) 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+  animation: slide-in-up 0.6s ease-out 0.4s both;
+}
+
+.undo-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+}
+
+.undo-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.undo-icon {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.undo-text {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
 .image-error {
   background: linear-gradient(135deg, var(--color-light-secondary) 0%, var(--color-light) 100%);
   display: flex;
@@ -691,6 +770,19 @@ const handleImageError = (event: Event) => {
   
   .status-icon {
     font-size: 1.5rem;
+  }
+  
+  .undo-button {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-xs);
+  }
+  
+  .undo-icon {
+    font-size: var(--font-size-md);
+  }
+  
+  .undo-text {
+    font-size: var(--font-size-xs);
   }
 }
 

@@ -368,6 +368,17 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  function undoStageSelection() {
+    // Only allow undo if we're in winner-select phase and have a selected stage
+    if (currentPhase.value !== 'winner-select' || !selectedStage.value) {
+      throw new Error('Cannot undo stage selection at this time');
+    }
+
+    // Clear the selected stage and return to selection phase
+    selectedStage.value = null;
+    currentPhase.value = 'selecting';
+  }
+
   function validateRestoredState() {
     // Ensure stageBans is a Map
     if (!(stageBans.value instanceof Map)) {
@@ -484,6 +495,7 @@ export const useGameStore = defineStore('game', () => {
     enableGentlemansAgreement,
     disableGentlemansAgreement,
     clearBans,
+    undoStageSelection,
     validateRestoredState,
   };
 }, {
