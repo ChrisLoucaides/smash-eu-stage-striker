@@ -20,7 +20,7 @@ export default defineConfig({
         drop_console: true,
         drop_debugger: true,
       },
-    },
+    } as any,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -28,8 +28,6 @@ export default defineConfig({
           pinia: ['pinia', 'pinia-plugin-persistedstate'],
         },
         assetFileNames: (assetInfo) => {
-          const info = assetInfo.name?.split('.') || []
-          const ext = info[info.length - 1]
           if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name || '')) {
             return `assets/images/[name]-[hash][extname]`
           }

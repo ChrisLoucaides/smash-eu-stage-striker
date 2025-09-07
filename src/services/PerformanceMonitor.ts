@@ -236,8 +236,8 @@ export class PerformanceMonitor {
    */
   private static sendToAnalytics(name: string, value: number, context?: string): void {
     // You can integrate with Google Analytics, Mixpanel, or any other analytics service
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'performance_metric', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'performance_metric', {
         metric_name: name,
         metric_value: value,
         context: context || 'unknown'

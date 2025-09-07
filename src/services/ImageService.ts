@@ -56,7 +56,7 @@ export class ImageService {
   /**
    * Get optimized image URL with WebP support
    */
-  static getOptimizedImageUrl(baseUrl: string, width?: number, quality: number = 80): string {
+  static getOptimizedImageUrl(baseUrl: string, _width?: number, _quality: number = 80): string {
     // For now, return the base URL
     // In production, you could integrate with an image optimization service
     return baseUrl;

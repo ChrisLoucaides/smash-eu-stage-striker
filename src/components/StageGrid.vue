@@ -186,8 +186,6 @@ const stageStates = computed(() => {
 
 // Computed properties for game state (optimized)
 const currentPhase = computed(() => gameStore.currentPhase);
-const currentPlayer = computed(() => gameStore.currentPlayer);
-const currentBanPhase = computed(() => gameStore.currentBanPhase);
 
 // Player turn information
 const isPlayer1Turn = computed(() => {
@@ -411,8 +409,14 @@ const handleUndoStageSelection = () => {
   .stage-item:nth-child(9) { animation-delay: 0.45s; }
 }
 
- Disable animations on very low-end devices or when user prefers reduced motion
-@media (max-width: 480px), (prefers-reduced-motion: reduce) {
+/* Disable animations on very low-end devices or when user prefers reduced motion */
+@media (max-width: 480px) {
+  .stage-item {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .stage-item {
     animation: none;
   }

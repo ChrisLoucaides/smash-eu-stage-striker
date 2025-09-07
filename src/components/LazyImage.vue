@@ -46,7 +46,7 @@ interface Props {
   decoding?: 'sync' | 'async' | 'auto';
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   placeholderText: 'Loading...',
   errorText: 'Failed to load',
   lazy: true,
