@@ -142,11 +142,4 @@ const handleError = (event: Event) => {
     font-size: var(--font-size-xs);
   }
 }
-
-/* Reduce animations on mobile for better performance */
-@media (prefers-reduced-motion: reduce) {
-  .lazy-image {
-    transition: none;
-  }
-}
 </style>

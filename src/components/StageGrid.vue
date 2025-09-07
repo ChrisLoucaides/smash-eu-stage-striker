@@ -370,19 +370,17 @@ const handleUndoStageSelection = () => {
   animation: scale-in 0.6s ease-out;
 }
 
-/* Reduce backdrop-filter on mobile for better performance */
+/* Reduce backdrop-filter intensity on mobile for better performance */
 @media (max-width: 768px) {
   .stage-item {
-    backdrop-filter: blur(5px);
-    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
   }
 }
 
-/* Disable backdrop-filter on very low-end devices */
+/* Further reduce backdrop-filter on very low-end devices */
 @media (max-width: 480px) {
   .stage-item {
-    backdrop-filter: none;
-    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(6px);
   }
 }
 
@@ -407,19 +405,6 @@ const handleUndoStageSelection = () => {
   .stage-item:nth-child(7) { animation-delay: 0.35s; }
   .stage-item:nth-child(8) { animation-delay: 0.4s; }
   .stage-item:nth-child(9) { animation-delay: 0.45s; }
-}
-
-/* Disable animations on very low-end devices or when user prefers reduced motion */
-@media (max-width: 480px) {
-  .stage-item {
-    animation: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .stage-item {
-    animation: none;
-  }
 }
 
 .stage-item:hover {
