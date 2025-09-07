@@ -699,6 +699,10 @@ const handleImageError = (event: Event) => {
     padding-bottom: 100%;
   }
 
+  .unban-hint {
+    display: none;
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -743,6 +747,20 @@ const handleImageError = (event: Event) => {
   .status-icon {
     font-size: 1.25rem;
   }
+}
+
+@media (max-width: 357px) {
+  .ban-player {
+    font-size: 0.7em;
+    margin-bottom: 1.3em;
+  }
+
+  .ban-icon {
+    font-size: 1.5em;
+    /*margin-bottom: -0.8em;*/
+    padding-top: -1em;
+  }
+
 }
 
 /* Focus styles for accessibility */
