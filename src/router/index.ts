@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import GameView from '../views/GameView.vue'
-import SetCompleteView from '../views/SetCompleteView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL || '/smash-eu-stage-striker/'),
@@ -9,17 +6,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/game',
       name: 'game',
-      component: GameView
+      component: () => import('../views/GameView.vue')
     },
     {
       path: '/set-complete',
       name: 'set-complete',
-      component: SetCompleteView
+      component: () => import('../views/SetCompleteView.vue')
     }
   ]
 })

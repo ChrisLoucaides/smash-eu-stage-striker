@@ -14,12 +14,43 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['vue'],
+          vendor: ['vue', 'vue-router'],
+          pinia: ['pinia', 'pinia-plugin-persistedstate'],
+        },
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name?.split('.') || []
+          const ext = info[info.length - 1]
+          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name || '')) {
+            return `assets/images/[name]-[hash][extname]`
+          }
+          if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name || '')) {
+            return `assets/fonts/[name]-[hash][extname]`
+          }
+          return `assets/[name]-[hash][extname]`
         },
       },
     },
+    // Optimize for mobile
+    target: 'es2015',
+    cssCodeSplit: true,
+  },
+  // Optimize dev server for mobile testing
+  server: {
+    host: true,
+    port: 3000,
+  },
+  preview: {
+    host: true,
+    port: 4173,
   },
 })

@@ -22,10 +22,11 @@
         :aria-disabled="!canInteractWithStage(stage.id)"
       >
         <div class="stage-image-container">
-          <img 
-            :src="stage.imageUrl" 
+          <LazyImage
+            :src="stage.imageUrl"
             :alt="stage.name"
-            class="stage-image"
+            :lazy="true"
+            @load="handleImageLoad"
             @error="handleImageError"
           />
           <div class="stage-overlay">
@@ -112,6 +113,7 @@
 import { computed } from 'vue';
 import { useGameStore } from '../stores/gameStore';
 import { StageService } from '../services/StageService';
+import LazyImage from './LazyImage.vue';
 import type { Stage } from '../types';
 
 const gameStore = useGameStore();
@@ -119,25 +121,86 @@ const gameStore = useGameStore();
 // Get all stages from the service
 const stages = computed(() => StageService.getAllStages());
 
-// Computed properties for game state
+// Memoize expensive computations for better performance
+const stageBansMap = computed(() => {
+  const map = new Map<string, number>();
+  gameStore.stageBans.forEach((playerIndex, stageId) => {
+    map.set(stageId, playerIndex);
+  });
+  return map;
+});
+
+// Optimize stage state checks with memoization
+const stageStates = computed(() => {
+  const states = new Map<string, {
+    isBanned: boolean;
+    bannedByPlayer: number | null;
+    isSelected: boolean;
+    canInteract: boolean;
+    isCurrentTurn: boolean;
+    canUnban: boolean;
+    banningPlayerName: string;
+  }>();
+
+  stages.value.forEach(stage => {
+    const isBanned = stageBansMap.value.has(stage.id);
+    const bannedByPlayer = stageBansMap.value.get(stage.id) ?? null;
+    const isSelected = gameStore.selectedStage === stage.id;
+    
+    let canInteract = false;
+    if (gameStore.currentPhase !== 'setup' && !isSelected) {
+      if (gameStore.gentlemansAgreement && gameStore.currentPhase === 'selecting') {
+        canInteract = true;
+      } else if (isBanned) {
+        canInteract = gameStore.currentPhase === 'banning' && gameStore.currentBanPhase?.phase === 'banning';
+      } else if (gameStore.currentPhase === 'banning') {
+        canInteract = gameStore.currentBanPhase?.phase === 'banning';
+      } else if (gameStore.currentPhase === 'selecting') {
+        canInteract = gameStore.currentBanPhase?.phase === 'selecting';
+      }
+    }
+    
+    const isCurrentTurn = canInteract && (gameStore.currentPhase === 'banning' || gameStore.currentPhase === 'selecting');
+    
+    const canUnban = gameStore.currentPhase === 'banning' && 
+                     isBanned && 
+                     gameStore.currentPlayer?.id === bannedByPlayer;
+    
+    const banningPlayerName = bannedByPlayer !== null 
+      ? gameStore.players[bannedByPlayer]?.name || 'Unknown Player'
+      : 'Unknown Player';
+
+    states.set(stage.id, {
+      isBanned,
+      bannedByPlayer,
+      isSelected,
+      canInteract,
+      isCurrentTurn,
+      canUnban,
+      banningPlayerName
+    });
+  });
+
+  return states;
+});
+
+// Computed properties for game state (optimized)
 const currentPhase = computed(() => gameStore.currentPhase);
 const currentPlayer = computed(() => gameStore.currentPlayer);
-const stageBans = computed(() => gameStore.stageBans);
-const selectedStage = computed(() => gameStore.selectedStage);
 const currentBanPhase = computed(() => gameStore.currentBanPhase);
 
 // Player turn information
 const isPlayer1Turn = computed(() => {
-  if (currentPhase.value !== 'banning') return false;
-  return currentPlayer.value?.id === 0;
+  if (gameStore.currentPhase !== 'banning') return false;
+  return gameStore.currentPlayer?.id === 0;
 });
 
 const currentPlayerName = computed(() => {
-  return currentPlayer.value?.name || 'Unknown Player';
+  return gameStore.currentPlayer?.name || 'Unknown Player';
 });
 
 const remainingBans = computed(() => {
-  return currentBanPhase.value?.remainingBans || 0;
+  return gameStore.currentBanPhase?.remainingBans || 0;
 });
 
 const loserName = computed(() => {
@@ -162,70 +225,36 @@ const isLoserPlayer1 = computed(() => {
 });
 
 const canUndoStageSelection = computed(() => {
-  return currentPhase.value === 'winner-select' && selectedStage.value !== null;
+  return gameStore.currentPhase === 'winner-select' && gameStore.selectedStage !== null;
 });
 
-// Stage state checks
+// Optimized stage state checks using memoized states
 const isBanned = (stageId: string): boolean => {
-  return stageBans.value.has(stageId);
+  return stageStates.value.get(stageId)?.isBanned ?? false;
 };
 
 const isBannedByPlayer = (stageId: string, playerIndex: number): boolean => {
-  return stageBans.value.get(stageId) === playerIndex;
+  return stageStates.value.get(stageId)?.bannedByPlayer === playerIndex;
 };
 
 const isSelected = (stageId: string): boolean => {
-  return selectedStage.value === stageId;
+  return stageStates.value.get(stageId)?.isSelected ?? false;
 };
 
 const canInteractWithStage = (stageId: string): boolean => {
-  if (currentPhase.value === 'setup') return false;
-  if (isSelected(stageId)) return false;
-  
-  // In gentleman's agreement mode, any stage can be selected (even banned ones)
-  if (gameStore.gentlemansAgreement && currentPhase.value === 'selecting') {
-    return true;
-  }
-  
-  // Allow interaction with banned stages to revert bans
-  if (isBanned(stageId)) {
-    return currentPhase.value === 'banning' && gameStore.currentBanPhase?.phase === 'banning';
-  }
-  
-  if (currentPhase.value === 'banning') {
-    return gameStore.currentBanPhase?.phase === 'banning';
-  }
-  
-  if (currentPhase.value === 'selecting') {
-    return gameStore.currentBanPhase?.phase === 'selecting';
-  }
-  
-  return false;
+  return stageStates.value.get(stageId)?.canInteract ?? false;
 };
 
 const isCurrentPlayerTurn = (stageId: string): boolean => {
-  if (!canInteractWithStage(stageId)) return false;
-  return currentPhase.value === 'banning' || currentPhase.value === 'selecting';
+  return stageStates.value.get(stageId)?.isCurrentTurn ?? false;
 };
 
 const canUnbanStage = (stageId: string): boolean => {
-  if (currentPhase.value !== 'banning') return false;
-  if (!isBanned(stageId)) return false;
-  
-  // Check if the current player is the one who banned this stage
-  const currentPlayerIndex = currentPlayer.value?.id;
-  if (currentPlayerIndex === undefined) return false;
-  
-  const banningPlayerIndex = stageBans.value.get(stageId);
-  return banningPlayerIndex === currentPlayerIndex;
+  return stageStates.value.get(stageId)?.canUnban ?? false;
 };
 
 const getBanningPlayerName = (stageId: string): string => {
-  const playerIndex = stageBans.value.get(stageId);
-  if (playerIndex !== undefined) {
-    return gameStore.players[playerIndex]?.name || 'Unknown Player';
-  }
-  return 'Unknown Player';
+  return stageStates.value.get(stageId)?.banningPlayerName ?? 'Unknown Player';
 };
 
 const getStageAriaLabel = (stage: Stage): string => {
@@ -284,14 +313,15 @@ const handleStageClick = (stageId: string) => {
   }
 };
 
+// Handle image load events
+const handleImageLoad = (event: Event) => {
+  // Image loaded successfully
+  console.log('Stage image loaded:', event);
+};
+
 const handleImageError = (event: Event) => {
-  const img = event.target as HTMLImageElement;
-  // Fallback to a placeholder image or show stage name prominently
-  img.style.display = 'none';
-  const container = img.parentElement;
-  if (container) {
-    container.classList.add('image-error');
-  }
+  console.error('Failed to load stage image:', event);
+  // Error handling is now managed by LazyImage component
 };
 
 const handleUndoStageSelection = () => {
@@ -342,6 +372,22 @@ const handleUndoStageSelection = () => {
   animation: scale-in 0.6s ease-out;
 }
 
+/* Reduce backdrop-filter on mobile for better performance */
+@media (max-width: 768px) {
+  .stage-item {
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Disable backdrop-filter on very low-end devices */
+@media (max-width: 480px) {
+  .stage-item {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
 .stage-item:nth-child(1) { animation-delay: 0.1s; }
 .stage-item:nth-child(2) { animation-delay: 0.2s; }
 .stage-item:nth-child(3) { animation-delay: 0.3s; }
@@ -351,6 +397,26 @@ const handleUndoStageSelection = () => {
 .stage-item:nth-child(7) { animation-delay: 0.7s; }
 .stage-item:nth-child(8) { animation-delay: 0.8s; }
 .stage-item:nth-child(9) { animation-delay: 0.9s; }
+
+/* Reduce animation delays on mobile for faster loading */
+@media (max-width: 768px) {
+  .stage-item:nth-child(1) { animation-delay: 0.05s; }
+  .stage-item:nth-child(2) { animation-delay: 0.1s; }
+  .stage-item:nth-child(3) { animation-delay: 0.15s; }
+  .stage-item:nth-child(4) { animation-delay: 0.2s; }
+  .stage-item:nth-child(5) { animation-delay: 0.25s; }
+  .stage-item:nth-child(6) { animation-delay: 0.3s; }
+  .stage-item:nth-child(7) { animation-delay: 0.35s; }
+  .stage-item:nth-child(8) { animation-delay: 0.4s; }
+  .stage-item:nth-child(9) { animation-delay: 0.45s; }
+}
+
+ Disable animations on very low-end devices or when user prefers reduced motion
+@media (max-width: 480px), (prefers-reduced-motion: reduce) {
+  .stage-item {
+    animation: none;
+  }
+}
 
 .stage-item:hover {
   transform: translateY(-6px) scale(1.02);
@@ -405,17 +471,23 @@ const handleUndoStageSelection = () => {
   overflow: hidden;
 }
 
-.stage-image {
+/* LazyImage component styling */
+.lazy-image-container {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lazy-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: all var(--transition-normal);
 }
 
-.stage-item:hover .stage-image {
+.stage-item:hover .lazy-image {
   transform: scale(1.1);
 }
 
@@ -656,6 +728,12 @@ const handleUndoStageSelection = () => {
   color: var(--color-dark);
   font-weight: 700;
   font-size: var(--font-size-lg);
+}
+
+@media screen and (min-width: 768px) and (max-width: 868px) {
+  .stage-name {
+    font-size: 0.72em;
+  }
 }
 
 /* Animations */
